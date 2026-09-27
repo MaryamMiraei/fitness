@@ -5,7 +5,7 @@ import { useAuthStore } from "../../store/useAuthStore";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 
-const GetDataUserStep3 = ({ onBack, onNext }) => {
+const GetDataUserStep3 = ({ onBack }) => {
   const navigate = useNavigate();
   const updateUserData = useUserData((state) => state.updateUserData);
   const currentUser = useAuthStore((state) => state.currentUser); // فرض بر داشتنِ ایمیل از auth

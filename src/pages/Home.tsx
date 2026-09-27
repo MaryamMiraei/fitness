@@ -1,4 +1,5 @@
-import BodyMetricsCard from "../components/BodyMetricsCard";
+import BodyMetricsCard from "../components/home/BodyMetricsCard";
+import ChartData from "../components/home/ChartData";
 import { useAuthStore } from "../store/useAuthStore";
 import { useUserData } from "../store/useUserData";
 
@@ -7,9 +8,8 @@ const Home = () => {
     (state) => state.currentUser?.userName || "User",
   );
 
-
   return (
-    <div className="lg:ml-64  flex flex-col min-h-screen bg-[#0b1120]">
+    <div className="mb-16 lg:mb-0 lg:ml-64  flex flex-col min-h-screen bg-[#0b1120]">
       {/* بخش سبز رنگ بالای صفحه */}
       <div className="bg-emerald-500 p-6 pb-24 text-white rounded-b-3xl ">
         <p className="text-sm opacity-80 mb-1">Welcome back</p>
@@ -37,18 +37,17 @@ const Home = () => {
               <h2 className="text-3xl font-bold"></h2>
             </div>
           </div>
-
-
         </div>
       </div>
 
       <section className=" p-8 grid gap-4 grid-cols-1 lg:grid-cols-2">
-        <BodyMetricsCard/>
-        <BodyMetricsCard/>
-
+        <BodyMetricsCard />
+      </section>
+      <section className="p-8 flex justify-center w-fit">
+        <ChartData />
       </section>
     </div>
   );
-}
+};
 
-export default Home
+export default Home;

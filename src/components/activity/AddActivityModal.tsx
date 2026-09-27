@@ -1,44 +1,43 @@
-import { useState } from "react";
-import type { FoodEntry, MealType } from "../types";
-import { useAuthStore } from "../store/useAuthStore";
-import { useUserData } from "../store/useUserData";
+import React, { useState } from 'react'
+import { useAuthStore } from '../../store/useAuthStore';
+import { useUserData } from '../../store/useUserData';
+import type { activityWorkout } from '../../types';
 
-interface IAddFoodModal {
+interface IAddActivityModal {
   close: () => void;
-  meals: { type: MealType; label: string }[];
 }
 
-const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
+const AddActivityModal = ({ close}: IAddActivityModal) => {
   const currentUser = useAuthStore((state) => state.currentUser);
-  const addFoodEntry = useUserData((state) => state.addFoodEntry);
+  const addActivityWorkout = useUserData((state) => state.addActivityWorkout);
 
-  const [foodEntriesDraft, setFoodEntriesDraft] = useState<FoodEntry>({
-    id: crypto.randomUUID(),
-    name: "",
-    calories: 0,
-    mealType: "breakfast",
-    timestamp: new Date(),
-  });
-  console.log(foodEntriesDraft);
-
+  const [activityWorkoutDraft, setActivityWorkoutDraft] =
+    useState<activityWorkout>({
+      id: crypto.randomUUID(),
+      name: "",
+      calories: 0,
+      duration: 0,
+      timestamp: new Date(),
+    });
+console.log(activityWorkoutDraft);
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
-    setFoodEntriesDraft((prev) => ({
+    setActivityWorkoutDraft((prev) => ({
       ...prev,
-      [name]: name === "calories" ? Number(value) : value,
+      [name]: name === "name" ? value : Number(value),
     }));
   };
 
   const handleSave = () => {
     if (currentUser) {
-      addFoodEntry(currentUser.email, {
-        id: foodEntriesDraft.id,
-        name: foodEntriesDraft.name,
-        calories: foodEntriesDraft.calories,
-        mealType: foodEntriesDraft.mealType,
-        timestamp: foodEntriesDraft.timestamp,
+      addActivityWorkout(currentUser.email, {
+        id: activityWorkoutDraft.id,
+        name: activityWorkoutDraft.name,
+        calories: activityWorkoutDraft.calories,
+        duration: activityWorkoutDraft.duration,
+        timestamp: activityWorkoutDraft.timestamp,
       });
       close();
     } else {
@@ -50,7 +49,7 @@ const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
     <div>
       <div className="w-full max-w-lg rounded-2xl border border-slate-700 bg-[#0f172a] p-5 text-white shadow-2xl">
         <h2 id="new-food-entry-title" className="mb-5 text-lg font-semibold">
-          New Food Entry
+          New Activity workout
         </h2>
 
         <form
@@ -59,13 +58,13 @@ const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
         >
           <label className="block">
             <span className="mb-2 block text-sm text-slate-300">
-              Food Name <span className="text-red-500">*</span>
+              Activity Name <span className="text-red-500">*</span>
             </span>
             <input
               required
               type="text"
               name="name"
-              value={foodEntriesDraft.name}
+              value={activityWorkoutDraft.name}
               onChange={handleChange}
               placeholder="e.g., Grilled Chicken Salad"
               className="w-full rounded-xl border border-slate-700 bg-[#1e293b] px-4 py-3 text-white outline-none placeholder:text-slate-500 focus:border-emerald-500"
@@ -80,35 +79,27 @@ const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
               required
               type="number"
               name="calories"
-              value={foodEntriesDraft.calories}
+              value={activityWorkoutDraft.calories}
+              onChange={handleChange}
+              min="0"
+              className="w-full rounded-xl border border-slate-700 bg-[#1e293b] px-4 py-3 text-white outline-none focus:border-emerald-500"
+            />
+          </label>
+          <label className="block">
+            <span className="mb-2 block text-sm text-slate-300">
+              Duration (min) <span className="text-red-500">*</span>
+            </span>
+            <input
+              required
+              type="number"
+              name="duration"
+              value={activityWorkoutDraft.duration}
               onChange={handleChange}
               min="0"
               className="w-full rounded-xl border border-slate-700 bg-[#1e293b] px-4 py-3 text-white outline-none focus:border-emerald-500"
             />
           </label>
 
-          <label className="block">
-            <span className="mb-2 block text-sm text-slate-300">
-              Meal Type <span className="text-red-500">*</span>
-            </span>
-            <select
-              name="mealType"
-              value={foodEntriesDraft.mealType}
-              onChange={handleChange}
-              required
-              className="w-full rounded-xl border border-slate-700 bg-[#1e293b] px-4 py-3 text-white outline-none focus:border-emerald-500"
-            >
-              <option value="" disabled>
-                Select meal type
-              </option>
-
-              {meals.map((meal) => (
-                <option key={meal.type} value={meal.type}>
-                  {meal.label}
-                </option>
-              ))}
-            </select>
-          </label>
 
           <div className="flex gap-3 pt-2">
             <button
@@ -133,4 +124,4 @@ const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
   );
 };
 
-export default AddFoodModal;
+export default AddActivityModal

@@ -1,10 +1,11 @@
 import { useState } from "react";
-import { useAuthStore } from "../store/useAuthStore";
-import { useUserData } from "../store/useUserData";
-import type { MealType } from "../types";
+import { useAuthStore } from "../../store/useAuthStore";
+import { useUserData } from "../../store/useUserData";
+import type { FoodEntry, MealType } from "../../types";
 import AddFoodListEmpty from "./AddFoodListEmpty";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { getTodayEntries } from "../../utils/calorieUtils";
 interface IAddFood {
   meals: { type: MealType; label: string; icon: string }[];
 }
@@ -14,6 +15,7 @@ const AddFoodList = ({ meals }: IAddFood) => {
   const foodEntries = useUserData((state) =>
     currentUser ? state.userProfiles[currentUser?.email]?.foodEntries : [],
   );
+  const todayFoodEntry = getTodayEntries(foodEntries);
   const removeFoodEntry = useUserData((state) => state.removeFoodEntry);
   const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
 
@@ -23,15 +25,14 @@ const AddFoodList = ({ meals }: IAddFood) => {
     setEntryToDelete(null);
   };
 
-  console.log(foodEntries);
   return (
     <div className="mb-[64px] lg:mb-0">
-      {foodEntries.length === 0 ? (
+      {todayFoodEntry.length === 0 ? (
         <AddFoodListEmpty />
       ) : (
         <div className="space-y-4">
           {meals.map((meal) => {
-            const filteredEntries = foodEntries.filter(
+            const filteredEntries = todayFoodEntry.filter(
               (e) => e.mealType === meal.type,
             );
             const mealCalories = filteredEntries.reduce(

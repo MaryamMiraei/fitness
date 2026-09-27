@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
-import ProfileEdit from "./ProfileEdit";
-import ProfileView from "./ProfileView";
-import { useAuthStore } from "../../store/useAuthStore";
+import ProfileEdit from "../components/profile/ProfileEdit";
+import ProfileView from "../components/profile/ProfileView";
+import { useAuthStore } from "../store/useAuthStore";
 import { useNavigate } from "react-router";
 
 const Profile = () => {
@@ -11,10 +11,10 @@ const Profile = () => {
   const logout = useAuthStore((state) => state.logout);
   const navigate = useNavigate();
 
-    const handleLogout = () => {
-      logout();
-      navigate("/signin");
-    };
+  const handleLogout = () => {
+    logout();
+    navigate("/signin");
+  };
 
   return (
     <section className=" lg:ml-64 h-screen">

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import GetDataUserStep1 from "./GetDataUserStep1";
-import GetDataUserStep2 from "./GetDataUserStep2";
-import GetDataUserStep3 from "./GetDataUserStep3";
+import GetDataUserStep1 from "../components/getUserData/GetDataUserStep1";
+import GetDataUserStep2 from "../components/getUserData/GetDataUserStep2";
+import GetDataUserStep3 from "../components/getUserData/GetDataUserStep3";
 
 const GetUserData = () => {
   const [step, setStep] = useState(1);

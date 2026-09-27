@@ -1,7 +1,7 @@
 import { useState } from "react";
-import AddFoodBottom from "../components/AddFoodBottom";
-import AddFoodModal from "../components/AddFoodModal";
-import AddFoodList from "../components/AddFoodList";
+import AddFoodBottom from "../components/food/AddFoodBottom";
+import AddFoodModal from "../components/food/AddFoodModal";
+import AddFoodList from "../components/food/AddFoodList";
 import type { MealType } from "../types";
 import { useAuthStore } from "../store/useAuthStore";
 import { useUserData } from "../store/useUserData";
@@ -19,12 +19,11 @@ const Food = () => {
     { type: "snack", label: "Snack", icon: "public/snack.svg" },
   ];
 
-const currentUser = useAuthStore((state)=>state.currentUser)
-const foodEntries= useUserData((state)=>currentUser? state.userProfiles[currentUser.email]?.foodEntries : [])
-const dailyCalorieIntake = getDailyCalorieIntake(foodEntries);
-const Today=getTodayEntries(foodEntries)
-console.log(Today, "today")
-
+  const currentUser = useAuthStore((state) => state.currentUser);
+  const foodEntries = useUserData((state) =>
+    currentUser ? state.userProfiles[currentUser.email]?.foodEntries : [],
+  );
+  const dailyCalorieIntake = getDailyCalorieIntake(foodEntries);
 
   return (
     <div className="mb-16 lg:ml-64 lg:mb-0 bg-[#0f172a] text-white min-h-screen">
@@ -36,7 +35,9 @@ console.log(Today, "today")
         </div>
         <div className="text-right">
           <p className="text-gray-400 text-sm">Today's Total</p>
-          <span className="text-emerald-500 font-bold text-2xl">{dailyCalorieIntake} kcal</span>
+          <span className="text-emerald-500 font-bold text-2xl">
+            {dailyCalorieIntake} kcal
+          </span>
         </div>
       </div>
 

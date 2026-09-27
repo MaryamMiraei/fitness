@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { FoodEntry } from "../types";
+import type { activityWorkout, FoodEntry } from "../types";
 
 type TGoal = "lose weight" | "maintain weight" | "gain muscle";
 
@@ -16,6 +16,7 @@ interface IUserData {
   dailyCalorieIntake: number;
   dailyCaloriesBurn: number;
   foodEntries: FoodEntry[];
+  activityWorkouts: activityWorkout[]
 }
 
 interface IUserStore {
@@ -25,6 +26,9 @@ interface IUserStore {
 
   addFoodEntry: (email: string, entry: FoodEntry) => void;
   removeFoodEntry: (email: string, entryId: string) => void;
+
+  addActivityWorkout: (email: string, entry: activityWorkout) => void;
+  removeActivityWorkout: (email: string, entryId: string) => void;
 
   removeUser: (email: string) => void;
   getUser: (email: string) => IUserData | null;
@@ -41,6 +45,7 @@ const defaultUserData: IUserData = {
   dailyCalorieIntake: 0,
   dailyCaloriesBurn: 0,
   foodEntries: [],
+  activityWorkouts:[]
 };
 
 export const useUserData = create<IUserStore>()(
@@ -64,8 +69,6 @@ export const useUserData = create<IUserStore>()(
       addFoodEntry: (email, entry) =>
         set((state) => {
           const currentUser = state.userProfiles[email] || defaultUserData;
-              console.log("foodEntries:", currentUser.foodEntries);
-              console.log("new entry:", entry);
           return {
             userProfiles: {
               ...state.userProfiles,
@@ -87,6 +90,37 @@ export const useUserData = create<IUserStore>()(
               [email]: {
                 ...currentUser,
                 foodEntries: currentUser.foodEntries.filter(
+                  (e) => e.id !== entryId,
+                ),
+              },
+            },
+          };
+        }),
+
+      addActivityWorkout: (email, entry) =>
+        set((state) => {
+          const currentUser = state.userProfiles[email] || defaultUserData;
+          console.log(currentUser.activityWorkouts)
+          return {
+            userProfiles: {
+              ...state.userProfiles,
+              [email]: {
+                ...currentUser,
+                activityWorkouts: [...(currentUser.activityWorkouts)||[], entry],
+              },
+            },
+          };
+        }),
+
+      removeActivityWorkout: (email, entryId) =>
+        set((state) => {
+          const currentUser = state.userProfiles[email] || defaultUserData;
+          return {
+            userProfiles: {
+              ...state.userProfiles,
+              [email]: {
+                ...currentUser,
+                activityWorkouts: currentUser.activityWorkouts.filter(
                   (e) => e.id !== entryId,
                 ),
               },

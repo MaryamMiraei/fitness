@@ -5,11 +5,11 @@ import MainLayout from "./layouts/MainLayout";
 import Home from "./pages/Home";
 import Food from "./pages/Food";
 import Activity from "./pages/Activity";
-import Profile from "./pages/Profile/Profile";
+import Profile from "./pages/Profile";
 import SignLayout from "./layouts/SignLayout";
 import Signup from "./pages/Signup";
-import GetUserData from "./pages/GetDataUser/GetDataUser";
 import GetUserDataLayout from "./layouts/GetUserDataLayout";
+import GetUserData from "./pages/GetDataUser";
 
 const router = createBrowserRouter([
   {

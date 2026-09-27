@@ -1,6 +1,6 @@
-import type { FoodEntry } from "../types";
+import type { activityWorkout, FoodEntry } from "../types";
 
-export const getTodayEntries = (foodEntries: FoodEntry[]) => {
+export const getTodayEntries = (entries: (FoodEntry|activityWorkout)[]) => {
   const startOfToday = new Date();
 
   startOfToday.setHours(0, 0, 0, 0);
@@ -9,7 +9,7 @@ export const getTodayEntries = (foodEntries: FoodEntry[]) => {
 
   startOfTomorrow.setDate(startOfTomorrow.getDate() + 1);
 
-  return foodEntries.filter((entry) => {
+  return entries.filter((entry) => {
     const timestamp = new Date(entry.timestamp);
     return timestamp >= startOfToday && timestamp < startOfTomorrow;
   });

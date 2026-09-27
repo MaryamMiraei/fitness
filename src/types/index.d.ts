@@ -9,3 +9,19 @@ export interface FoodEntry {
   mealType: MealType;
   timestamp: Date;
 }
+
+export type ExerciseType =
+  | "Walking"
+  | "Running"
+  | "Cycling"
+  | "Swimming"
+  | "Yoga"
+  | "Weight Training";
+
+export interface activityWorkout {
+  id: string;
+  name: string;
+  calories: number;
+  duration: number;
+  timestamp: Date;
+}

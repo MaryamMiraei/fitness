@@ -1,13 +1,17 @@
-import { useAuthStore } from "../store/useAuthStore";
-import { useUserData } from "../store/useUserData";
+import { useAuthStore } from "../../store/useAuthStore";
+import { useUserData } from "../../store/useUserData";
 
 const BodyMetricsCard = () => {
   const currentUser = useAuthStore((state) => state.currentUser);
   const email = currentUser?.email;
 
   // گرفتن دیتا از داخل آبجکت پروفایل بر اساس ایمیل
-  const weight = useUserData((state) => email ? state.userProfiles[email]?.weight : null);
-  const height = useUserData((state) => email ? state.userProfiles[email]?.height : null);
+  const weight = useUserData((state) =>
+    email ? state.userProfiles[email]?.weight : null,
+  );
+  const height = useUserData((state) =>
+    email ? state.userProfiles[email]?.height : null,
+  );
 
   // محاسبه BMI: وزن تقسیم بر مجذور قد (متر)
   const bmi = height > 0 ? (weight / Math.pow(height / 100, 2)).toFixed(1) : 0;
