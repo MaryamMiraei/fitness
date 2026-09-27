@@ -8,13 +8,11 @@ interface IProfileEdit {
 
 const ProfileEdit = ({ onClose }: IProfileEdit) => {
   const updateUserData = useUserData((state) => state.updateUserData);
-  const currentUser = useAuthStore((state) => state.currentUser); // فرض بر داشتنِ ایمیل از auth
+  const currentUser = useAuthStore((state) => state.currentUser);
   const userData = useUserData((state) =>
     currentUser ? state.userProfiles[currentUser.email] : null,
   );
 
-  // ۳. حالا می‌توانید از userData استفاده کنید.
-  // نکته: چون ممکن است userData در لحظه اول null باشد، باید حتماً بررسی کنید:
   const [formData, setFormData] = useState({
     age: userData?.age ?? 0,
     weight: userData?.weight ?? 0,
@@ -32,10 +30,8 @@ const ProfileEdit = ({ onClose }: IProfileEdit) => {
     }));
   };
 
-  // ۲. متد handleSave جدید
   const handleSave = () => {
     if (currentUser) {
-      // ارسال ایمیل کاربر و آبجکتِ تغییرات
       updateUserData(currentUser.email, {
         age: formData.age,
         weight: formData.weight,
@@ -55,10 +51,6 @@ const ProfileEdit = ({ onClose }: IProfileEdit) => {
     <div>
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-xl font-bold text-white">Edit Your Profile</h2>
-        <button
-          onClick={onClose}
-          className="text-slate-500 hover:text-white transition-colors"
-        ></button>
       </div>
 
       <div className="space-y-5">

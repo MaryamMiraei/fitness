@@ -18,8 +18,8 @@ const GetDataUserStep3 = ({ onBack, onNext }) => {
     weight: userData?.weight ?? 0,
     height: userData?.height ?? 0,
     goal: userData?.goal ?? "maintain weight",
-    dailyCalorieIntake: userData?.dailyCalorieIntake ?? 0,
-    dailyCaloriesBurn: userData?.dailyCaloriesBurn ?? 0,
+    dailyCalorieIntakeGoal: userData?.dailyCalorieIntakeGoal ?? 0,
+    dailyCaloriesBurnGoal: userData?.dailyCaloriesBurnGoal ?? 0,
   });
 
   const handleChange = (
@@ -48,8 +48,8 @@ const GetDataUserStep3 = ({ onBack, onNext }) => {
           | "lose weight"
           | "maintain weight"
           | "gain muscle",
-        dailyCalorieIntake: formData.dailyCalorieIntake,
-        dailyCaloriesBurn: formData.dailyCaloriesBurn,
+        dailyCalorieIntake: formData.dailyCalorieIntakeGoal,
+        dailyCaloriesBurn: formData.dailyCaloriesBurnGoal,
       });
 
       navigate("/home")
@@ -131,7 +131,7 @@ const GetDataUserStep3 = ({ onBack, onNext }) => {
           </div>
 
           <span className="text-sm font-semibold text-[#00d9a5]">
-            {formData.dailyCalorieIntake} kcal
+            {formData.dailyCalorieIntakeGoal} kcal
           </span>
         </div>
 
@@ -141,7 +141,7 @@ const GetDataUserStep3 = ({ onBack, onNext }) => {
           min="1000"
           max="4000"
           step="50"
-          value={formData.dailyCalorieIntake}
+          value={formData.dailyCalorieIntakeGoal}
           onChange={handleChange}
           className="h-2 w-full cursor-pointer rounded-full
             bg-[#344258]
@@ -160,7 +160,9 @@ const GetDataUserStep3 = ({ onBack, onNext }) => {
             </span>
           </div>
 
-          <span className="text-sm font-semibold text-[#00d9a5]">{} kcal</span>
+          <span className="text-sm font-semibold text-[#00d9a5]">
+            {formData.dailyCaloriesBurnGoal} kcal
+          </span>
         </div>
 
         <input
@@ -169,7 +171,7 @@ const GetDataUserStep3 = ({ onBack, onNext }) => {
           min="0"
           max="2000"
           step="50"
-          value={formData.dailyCaloriesBurn}
+          value={formData.dailyCaloriesBurnGoal}
           onChange={handleChange}
           className="h-2 w-full cursor-pointer rounded-full
             bg-[#344258]

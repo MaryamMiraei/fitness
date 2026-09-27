@@ -16,8 +16,8 @@ const BodyMetricsCard = () => {
     <div className="bg-slate-900 text-white p-6 rounded-3xl w-full shadow-xl">
       {/* هدر کارت */}
       <div className="flex items-center gap-4 mb-6">
-        <div className="bg-indigo-100 p-3 rounded-2xl">
-          <span className="text-indigo-600 text-xl">⚖️</span>
+        <div className=" rounded-2xl">
+          <img src="public/Background (2).svg" alt="" />
         </div>
         <div>
           <h3 className="font-bold text-lg">Body Metrics</h3>
@@ -29,7 +29,9 @@ const BodyMetricsCard = () => {
       <div className="space-y-4 mb-6">
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3 text-gray-400">
-            <div className="bg-slate-800 p-2 rounded-lg">⚖️</div>
+            <div>
+              <img src="public/Background.svg" alt="" />
+            </div>
             <span>Weight</span>
           </div>
           <span className="font-bold">{weight} kg</span>
@@ -37,7 +39,9 @@ const BodyMetricsCard = () => {
 
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3 text-gray-400">
-            <div className="bg-slate-800 p-2 rounded-lg">📏</div>
+            <div>
+              <img src="public/Background (1).svg" alt="" />
+            </div>
             <span>Height</span>
           </div>
           <span className="font-bold">{height} cm</span>
@@ -54,10 +58,10 @@ const BodyMetricsCard = () => {
 
       {/* نوار رنگی BMI */}
       <div className="flex w-full h-2 rounded-full overflow-hidden">
-        <div className="w-1/4 bg-blue-600" />
-        <div className="w-1/4 bg-emerald-500" />
-        <div className="w-1/4 bg-orange-600" />
-        <div className="w-1/4 bg-red-600" />
+        <div className="w-1/4 bg-[#51A2FF]" />
+        <div className="w-1/4 bg-[#00D492]" />
+        <div className="w-1/4 bg-[#FF8904]" />
+        <div className="w-1/4 bg-[#FF6467]" />
       </div>
 
       {/* اعداد زیر نوار */}

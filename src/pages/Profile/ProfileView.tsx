@@ -1,7 +1,10 @@
 import { useAuthStore } from '../../store/useAuthStore';
 import { useUserData } from '../../store/useUserData';
 
-const ProfileView = ({ onEdit }) => {
+interface IProfileView {
+  onEdit: ()=>void;
+}
+const ProfileView = ({ onEdit }:IProfileView) => {
   // ۱. گرفتن ایمیل کاربر لاگین شده
   const currentUserEmail = useAuthStore((state) => state.currentUser?.email);
 
@@ -10,7 +13,6 @@ const ProfileView = ({ onEdit }) => {
     currentUserEmail ? state.userProfiles[currentUserEmail] : null,
   );
   
-
   // ۳. مدیریت حالت "عدم وجود اطلاعات"
   if (!userData) {
     return (

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { useUserData } from "../../store/useUserData";
+import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser } from "@fortawesome/free-solid-svg-icons";
 import ProfileEdit from "./ProfileEdit";

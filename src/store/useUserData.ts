@@ -1,141 +1,110 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { FoodEntry } from "../types";
 
 type TGoal = "lose weight" | "maintain weight" | "gain muscle";
 
-// ۱. تعریفِ ساختارِ دیتای هر کاربر (بدون متدها)
+// ۱. تعریف ساختار دیتای هر کاربر
 interface IUserData {
   age: number | null;
   weight: number | null;
   height: number | null;
   userName: string | null;
   goal: TGoal;
+  dailyCalorieIntakeGoal: number;
+  dailyCaloriesBurnGoal: number;
   dailyCalorieIntake: number;
   dailyCaloriesBurn: number;
+  foodEntries: FoodEntry[];
 }
 
-// ۲. تعریفِ ساختارِ کلی استور
 interface IUserStore {
-  // این نقشه (Map) تمام کاربران را نگه می‌دارد
   userProfiles: Record<string, IUserData>;
 
-  // متدهایِ آپدیت که حالا نیاز به email دارند
-  setAge: (email: string, age: number | null) => void;
-  setWeight: (email: string, weight: number | null) => void;
-  setHeight: (email: string, height: number | null) => void;
-  setUserName: (email: string, userName: string | null) => void;
-  setGoal: (email: string, goal: TGoal) => void;
-  setDailyCalorieIntake: (email: string, calories: number) => void;
-  setDailyCaloriesBurn: (email: string, calories: number) => void;
-
-  // متد کمکی برای آپدیت کلی (بسیار کاربردی)
   updateUserData: (email: string, newData: Partial<IUserData>) => void;
+
+  addFoodEntry: (email: string, entry: FoodEntry) => void;
+  removeFoodEntry: (email: string, entryId: string) => void;
+
+  removeUser: (email: string) => void;
+  getUser: (email: string) => IUserData | null;
 }
 
 const defaultUserData: IUserData = {
   age: null,
   weight: null,
   height: null,
-  userName:null,
+  userName: null,
   goal: "maintain weight",
+  dailyCalorieIntakeGoal: 0,
+  dailyCaloriesBurnGoal: 0,
   dailyCalorieIntake: 0,
   dailyCaloriesBurn: 0,
+  foodEntries: [],
 };
 
 export const useUserData = create<IUserStore>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       userProfiles: {},
 
-      // منطقِ کمکی برای پیدا کردن یا ایجادِ دیتای پیش‌فرض کاربر
-      setAge: (email, age) =>
-        set((state) => ({
-          userProfiles: {
-            ...state.userProfiles,
-            [email]: { ...(state.userProfiles[email] || defaultUserData), age },
-          },
-        })),
-
-      setWeight: (email, weight) =>
-        set((state) => ({
-          userProfiles: {
-            ...state.userProfiles,
-            [email]: {
-              ...(state.userProfiles[email] || defaultUserData),
-              weight,
-            },
-          },
-        })),
-
-      setHeight: (email, height) =>
-        set((state) => ({
-          userProfiles: {
-            ...state.userProfiles,
-            [email]: {
-              ...(state.userProfiles[email] || defaultUserData),
-              height,
-            },
-          },
-        })),
-
-      setUserName: (email, userName) =>
-        set((state) => ({
-          userProfiles: {
-            ...state.userProfiles,
-            [email]: {
-              ...(state.userProfiles[email] || defaultUserData),
-              userName,
-            },
-          },
-        })),
-
-      setGoal: (email, goal) =>
-        set((state) => ({
-          userProfiles: {
-            ...state.userProfiles,
-            [email]: {
-              ...(state.userProfiles[email] || defaultUserData),
-              goal,
-            },
-          },
-        })),
-
-      setDailyCalorieIntake: (email, calories) =>
-        set((state) => ({
-          userProfiles: {
-            ...state.userProfiles,
-            [email]: {
-              ...(state.userProfiles[email] || defaultUserData),
-              dailyCalorieIntake: calories,
-            },
-          },
-        })),
-
-      setDailyCaloriesBurn: (email, calories) =>
-        set((state) => ({
-          userProfiles: {
-            ...state.userProfiles,
-            [email]: {
-              ...(state.userProfiles[email] || defaultUserData),
-              dailyCaloriesBurn: calories,
-            },
-          },
-        })),
-
-      // این متد اجازه می‌دهد به راحتی چندین فیلد را با هم آپدیت کنید
+      // آپدیت کلی پروفایل (سن، وزن، هدف و ...)
       updateUserData: (email, newData) =>
-        set((state) => ({
-          userProfiles: {
-            ...state.userProfiles,
-            [email]: {
-              ...(state.userProfiles[email] || defaultUserData),
-              ...newData,
+        set((state) => {
+          const currentUser = state.userProfiles[email] || defaultUserData;
+          return {
+            userProfiles: {
+              ...state.userProfiles,
+              [email]: { ...currentUser, ...newData },
             },
-          },
-        })),
+          };
+        }),
+
+      // اضافه کردن یک غذای جدید به لیست کاربر
+      addFoodEntry: (email, entry) =>
+        set((state) => {
+          const currentUser = state.userProfiles[email] || defaultUserData;
+              console.log("foodEntries:", currentUser.foodEntries);
+              console.log("new entry:", entry);
+          return {
+            userProfiles: {
+              ...state.userProfiles,
+              [email]: {
+                ...currentUser,
+                foodEntries: [...(currentUser.foodEntries)||[], entry],
+              },
+            },
+          };
+        }),
+
+      // حذف یک غذای خاص از لیست کاربر
+      removeFoodEntry: (email, entryId) =>
+        set((state) => {
+          const currentUser = state.userProfiles[email] || defaultUserData;
+          return {
+            userProfiles: {
+              ...state.userProfiles,
+              [email]: {
+                ...currentUser,
+                foodEntries: currentUser.foodEntries.filter(
+                  (e) => e.id !== entryId,
+                ),
+              },
+            },
+          };
+        }),
+
+      removeUser: (email) =>
+        set((state) => {
+          const newProfiles = { ...state.userProfiles };
+          delete newProfiles[email];
+          return { userProfiles: newProfiles };
+        }),
+
+      getUser: (email) => get().userProfiles[email] || null,
     }),
     {
-      name: "user-profile-data", // این نام در LocalStorage ثابت می‌ماند
+      name: "user-profile-data",
     },
   ),
 );
