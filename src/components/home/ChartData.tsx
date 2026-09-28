@@ -19,7 +19,10 @@ const ChartData = () => {
   const foodEntries = useUserData((state) =>
     currentUser ? state.userProfiles[currentUser.email]?.foodEntries : [],
   );
-  const chartData = getLast7DaysCalories(foodEntries);
+  const activityWorkouts = useUserData((state) =>
+    currentUser ? state.userProfiles[currentUser.email]?.activityWorkouts : [],
+  );
+  const chartData = getLast7DaysCalories(foodEntries, activityWorkouts);
   return (
     <section className="w-full h-auto aspect-[16/9] min-h-[400px] rounded-2xl bg-[#111827] p-6 text-white shadow-xl">
       <h2 className="mb-5 text-lg font-semibold tracking-tight">
@@ -82,18 +85,18 @@ const ChartData = () => {
               }}
             />
             <Bar
-              dataKey="calories"
+              dataKey="caloriesBurned"
               name="Burn"
               fill="#f97316"
               radius={[4, 4, 0, 0]}
-              barSize={10}
+              barSize={15}
             />
             <Bar
-              dataKey="calories"
+              dataKey="caloriesIntake"
               name="Intake"
               fill="#22c55e"
               radius={[4, 4, 0, 0]}
-              barSize={10}
+              barSize={15}
             />
           </BarChart>
         </ResponsiveContainer>
