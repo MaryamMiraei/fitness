@@ -1,11 +1,10 @@
 import { useState } from "react";
 import AddActivityBottom from "../components/activity/AddActivityBottom";
-import AddActivityListEmpty from "../components/activity/AddActivityListEmpty";
 import AddActivityModal from "../components/activity/AddActivityModal";
 import { useAuthStore } from "../store/useAuthStore";
 import { useUserData } from "../store/useUserData";
 import AddActivityList from "../components/activity/AddActivityList";
-import { getDailyCalorieBurn, getDailyTimeExercise } from "../utils/calorieUtils";
+import { getDailyCalorieBurn} from "../utils/calorieUtils";
 
 const Activity = () => {
   const [isModalOpen, setModalOpen] = useState(false);

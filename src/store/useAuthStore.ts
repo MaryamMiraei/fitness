@@ -5,6 +5,7 @@ interface User {
   email: string;
   password: string;
   userName: string;
+  signupTimestamp: string;
 }
 
 interface AuthState {
@@ -24,7 +25,7 @@ export const useAuthStore = create<AuthState>()(
       currentUser: null,
 
       // ۳. به‌روزرسانی منطق ثبت‌نام برای دریافت و ذخیره نام
-      signUp: (email, password, userName) => {
+      signUp: (email, password, userName ) => {
         const { users } = get();
 
         // چک کردن تکراری نبودن ایمیل
@@ -33,7 +34,7 @@ export const useAuthStore = create<AuthState>()(
         }
 
         // ذخیره کاربر جدید شامل نام، ایمیل و پسورد
-        const newUser: User = { email, password, userName };
+        const newUser: User = { email, password, userName,signupTimestamp };
         set({ users: [...users, newUser], currentUser: newUser });
         return true;
       },

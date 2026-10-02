@@ -48,8 +48,8 @@ const GetDataUserStep3 = ({ onBack }) => {
           | "lose weight"
           | "maintain weight"
           | "gain muscle",
-        dailyCalorieIntake: formData.dailyCalorieIntakeGoal,
-        dailyCaloriesBurn: formData.dailyCaloriesBurnGoal,
+        dailyCalorieIntakeGoal: formData.dailyCalorieIntakeGoal,
+        dailyCaloriesBurnGoal: formData.dailyCaloriesBurnGoal,
       });
 
       navigate("/home")

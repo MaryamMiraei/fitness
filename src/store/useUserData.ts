@@ -11,12 +11,12 @@ interface IUserData {
   height: number | null;
   userName: string | null;
   goal: TGoal;
-  dailyCalorieIntakeGoal: number;
-  dailyCaloriesBurnGoal: number;
-  dailyCalorieIntake: number;
-  dailyCaloriesBurn: number;
+  // dailyCalorieIntakeGoal: number;
+  // dailyCaloriesBurnGoal: number;
+  // dailyCalorieIntake: number;
+  // dailyCaloriesBurn: number;
   foodEntries: FoodEntry[];
-  activityWorkouts: activityWorkout[]
+  activityWorkouts: activityWorkout[];
 }
 
 interface IUserStore {
@@ -40,12 +40,12 @@ const defaultUserData: IUserData = {
   height: null,
   userName: null,
   goal: "maintain weight",
-  dailyCalorieIntakeGoal: 0,
-  dailyCaloriesBurnGoal: 0,
-  dailyCalorieIntake: 0,
-  dailyCaloriesBurn: 0,
+  // dailyCalorieIntakeGoal: 0,
+  // dailyCaloriesBurnGoal: 0,
+  // dailyCalorieIntake: 0,
+  // dailyCaloriesBurn: 0,
   foodEntries: [],
-  activityWorkouts:[]
+  activityWorkouts: [],
 };
 
 export const useUserData = create<IUserStore>()(
@@ -74,7 +74,7 @@ export const useUserData = create<IUserStore>()(
               ...state.userProfiles,
               [email]: {
                 ...currentUser,
-                foodEntries: [...(currentUser.foodEntries)||[], entry],
+                foodEntries: [...(currentUser.foodEntries || []), entry],
               },
             },
           };
@@ -100,13 +100,16 @@ export const useUserData = create<IUserStore>()(
       addActivityWorkout: (email, entry) =>
         set((state) => {
           const currentUser = state.userProfiles[email] || defaultUserData;
-          console.log(currentUser.activityWorkouts)
+          console.log(currentUser.activityWorkouts);
           return {
             userProfiles: {
               ...state.userProfiles,
               [email]: {
                 ...currentUser,
-                activityWorkouts: [...(currentUser.activityWorkouts)||[], entry],
+                activityWorkouts: [
+                  ...(currentUser.activityWorkouts || []),
+                  entry,
+                ],
               },
             },
           };
