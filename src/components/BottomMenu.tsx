@@ -1,10 +1,14 @@
-import { faHeartPulse, faHome, faUser, faUtensils } from "@fortawesome/free-solid-svg-icons";
+import {
+  faHeartPulse,
+  faHome,
+  faUser,
+  faUtensils,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router";
-import { useAuthStore } from "../store/useAuthStore";
 
 const BottomMenu = () => {
-    const currentUserUserName = useAuthStore((state) => state.currentUser?.userName);
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 px-4 pb-safe lg:hidden transition-colors duration-200 ">
       <div className="max-w-lg mx-auto flex justify-around items-center h-16">
@@ -66,11 +70,11 @@ const BottomMenu = () => {
             src="public/Profile user.png"
             alt=""
           />
-          <p>{currentUserUserName}</p>
+          <p>{}</p>
         </div>
       </div>
     </nav>
   );
-}
+};
 
-export default BottomMenu
+export default BottomMenu;

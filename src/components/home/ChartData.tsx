@@ -10,19 +10,16 @@ import {
   Legend,
   CartesianGrid,
 } from "recharts";
-import { getLast7DaysCalories } from "../../utils/calorieUtils";
-import { useUserData } from "../../store/useUserData";
-import { useAuthStore } from "../../store/useAuthStore";
 
 const ChartData = () => {
-  const currentUser = useAuthStore((state) => state.currentUser);
-  const foodEntries = useUserData((state) =>
-    currentUser ? state.userProfiles[currentUser.email]?.foodEntries : [],
-  );
-  const activityWorkouts = useUserData((state) =>
-    currentUser ? state.userProfiles[currentUser.email]?.activityWorkouts : [],
-  );
-  const chartData = getLast7DaysCalories(foodEntries, activityWorkouts);
+  // const currentUser = useAuthStore((state) => state.currentUser);
+  // const foodEntries = useUserData((state) =>
+  //   currentUser ? state.userProfiles[currentUser.email]?.foodEntries : [],
+  // );
+  // const activityWorkouts = useUserData((state) =>
+  //   currentUser ? state.userProfiles[currentUser.email]?.activityWorkouts : [],
+  // );
+  // const chartData = getLast7DaysCalories(foodEntries, activityWorkouts);
   return (
     <section className="w-full h-auto aspect-[16/9] min-h-[400px] rounded-2xl bg-[#111827] p-6 text-white shadow-xl">
       <h2 className="mb-5 text-lg font-semibold tracking-tight">
@@ -32,7 +29,7 @@ const ChartData = () => {
       <div className="h-72 w-full">
         <ResponsiveContainer width="100%" height="100%">
           <BarChart
-            data={chartData}
+            // data={}
             margin={{ top: 8, right: 8, bottom: 4, left: 0 }}
             barCategoryGap="10%"
             barGap={10}

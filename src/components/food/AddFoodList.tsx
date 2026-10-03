@@ -1,33 +1,27 @@
-import { useState } from "react";
-import { useAuthStore } from "../../store/useAuthStore";
-import { useUserData } from "../../store/useUserData";
-import type { FoodEntry, MealType } from "../../types";
-import AddFoodListEmpty from "./AddFoodListEmpty";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import { getTodayEntries } from "../../utils/calorieUtils";
+import type { MealType } from "../../types";
+
 interface IAddFood {
   meals: { type: MealType; label: string; icon: string }[];
 }
 
 const AddFoodList = ({ meals }: IAddFood) => {
-  const currentUser = useAuthStore((state) => state.currentUser);
-  const foodEntries = useUserData((state) =>
-    currentUser ? state.userProfiles[currentUser?.email]?.foodEntries : [],
-  );
-  const todayFoodEntry = getTodayEntries(foodEntries);
-  const removeFoodEntry = useUserData((state) => state.removeFoodEntry);
-  const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
+  // const currentUser = useAuthStore((state) => state.currentUser);
+  // const foodEntries = useUserData((state) =>
+  //   currentUser ? state.userProfiles[currentUser?.email]?.foodEntries : [],
+  // );
+  // const todayFoodEntry = getTodayEntries(foodEntries);
+  // const removeFoodEntry = useUserData((state) => state.removeFoodEntry);
+  // const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
 
-  const handleDelete = () => {
-    if (!entryToDelete || !currentUser) return;
-    removeFoodEntry(currentUser?.email, entryToDelete);
-    setEntryToDelete(null);
-  };
+  // const handleDelete = () => {
+  //   if (!entryToDelete || !currentUser) return;
+  //   removeFoodEntry(currentUser?.email, entryToDelete);
+  //   setEntryToDelete(null);
+  // };
 
   return (
     <div className="mb-[64px] lg:mb-0">
-      {todayFoodEntry.length === 0 ? (
+      {/* {todayFoodEntry.length === 0 ? (
         <AddFoodListEmpty />
       ) : (
         <div className="space-y-4">
@@ -120,7 +114,7 @@ const AddFoodList = ({ meals }: IAddFood) => {
             );
           })}
         </div>
-      )}
+      )} */}
     </div>
   );
 };

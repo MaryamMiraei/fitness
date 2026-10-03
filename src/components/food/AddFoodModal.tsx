@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { FoodEntry, MealType } from "../../types";
-import { useAuthStore } from "../../store/useAuthStore";
-import { useUserData } from "../../store/useUserData";
+
 
 interface IAddFoodModal {
   close: () => void;
@@ -9,41 +8,41 @@ interface IAddFoodModal {
 }
 
 const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
-  const currentUser = useAuthStore((state) => state.currentUser);
-  const addFoodEntry = useUserData((state) => state.addFoodEntry);
+  // const currentUser = useAuthStore((state) => state.currentUser);
+  // const addFoodEntry = useUserData((state) => state.addFoodEntry);
 
-  const [foodEntriesDraft, setFoodEntriesDraft] = useState<FoodEntry>({
-    id: crypto.randomUUID(),
-    name: "",
-    calories: 0,
-    mealType: "breakfast",
-    timestamp: new Date(),
-  });
+  // const [foodEntriesDraft, setFoodEntriesDraft] = useState<FoodEntry>({
+  //   id: crypto.randomUUID(),
+  //   name: "",
+  //   calories: 0,
+  //   mealType: "breakfast",
+  //   timestamp: new Date(),
+  // });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFoodEntriesDraft((prev) => ({
-      ...prev,
-      [name]: name === "calories" ? Number(value) : value,
-    }));
-  };
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  // ) => {
+  //   const { name, value } = e.target;
+  //   setFoodEntriesDraft((prev) => ({
+  //     ...prev,
+  //     [name]: name === "calories" ? Number(value) : value,
+  //   }));
+  // };
 
-  const handleSave = () => {
-    if (currentUser) {
-      addFoodEntry(currentUser.email, {
-        id: foodEntriesDraft.id,
-        name: foodEntriesDraft.name,
-        calories: foodEntriesDraft.calories,
-        mealType: foodEntriesDraft.mealType,
-        timestamp: foodEntriesDraft.timestamp,
-      });
-      close();
-    } else {
-      console.error("کاربر لاگین نیست!");
-    }
-  };
+  // const handleSave = () => {
+  //   if (currentUser) {
+  //     addFoodEntry(currentUser.email, {
+  //       id: foodEntriesDraft.id,
+  //       name: foodEntriesDraft.name,
+  //       calories: foodEntriesDraft.calories,
+  //       mealType: foodEntriesDraft.mealType,
+  //       timestamp: foodEntriesDraft.timestamp,
+  //     });
+  //     close();
+  //   } else {
+  //     console.error("کاربر لاگین نیست!");
+  //   }
+  // };
 
   return (
     <div>
@@ -64,8 +63,8 @@ const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
               required
               type="text"
               name="name"
-              value={foodEntriesDraft.name}
-              onChange={handleChange}
+              // value={}
+              // onChange={}
               placeholder="e.g., Grilled Chicken Salad"
               className="w-full rounded-xl border border-slate-700 bg-[#1e293b] px-4 py-3 text-white outline-none placeholder:text-slate-500 focus:border-emerald-500"
             />
@@ -79,8 +78,8 @@ const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
               required
               type="number"
               name="calories"
-              value={foodEntriesDraft.calories}
-              onChange={handleChange}
+              // value={foodEntriesDraft.calories}
+              // onChange={handleChange}
               min="0"
               className="w-full rounded-xl border border-slate-700 bg-[#1e293b] px-4 py-3 text-white outline-none focus:border-emerald-500"
             />
@@ -92,8 +91,8 @@ const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
             </span>
             <select
               name="mealType"
-              value={foodEntriesDraft.mealType}
-              onChange={handleChange}
+              // value={foodEntriesDraft.mealType}
+              // onChange={handleChange}
               required
               className="w-full rounded-xl border border-slate-700 bg-[#1e293b] px-4 py-3 text-white outline-none focus:border-emerald-500"
             >
@@ -120,7 +119,7 @@ const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
 
             <button
               type="button"
-              onClick={handleSave}
+              // onClick={handleSave}
               className="flex-1 rounded-xl bg-emerald-500 py-3 font-medium text-white transition hover:bg-emerald-600"
             >
               Add Entry

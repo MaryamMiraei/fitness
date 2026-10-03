@@ -1,51 +1,49 @@
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useUserData } from "../../store/useUserData";
-import { useState } from "react";
-import { useAuthStore } from "../../store/useAuthStore";
+
 
 const GetDataUserStep2 = ({ onBack, onNext }) => {
- const updateUserData = useUserData((state) => state.updateUserData);
-  const currentUser = useAuthStore((state) => state.currentUser); // فرض بر داشتنِ ایمیل از auth
-  const userData = useUserData((state) =>
-    currentUser ? state.userProfiles[currentUser.email] : null,
-  );
+  // const updateUserData = useUserData((state) => state.updateUserData);
+  // const currentUser = useAuthStore((state) => state.currentUser); // فرض بر داشتنِ ایمیل از auth
+  // const userData = useUserData((state) =>
+  //   currentUser ? state.userProfiles[currentUser.email] : null,
+  // );
 
-  const [formData, setFormData] = useState({
-    age: userData?.age ?? 0,
-    weight: userData?.weight ?? 0,
-    height: userData?.height ?? 0,
-    goal: userData?.goal ?? "maintain weight",
-  });
+  // const [formData, setFormData] = useState({
+  //   age: userData?.age ?? 0,
+  //   weight: userData?.weight ?? 0,
+  //   height: userData?.height ?? 0,
+  //   goal: userData?.goal ?? "maintain weight",
+  // });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "goal" ? value : Number(value),
-    }));
-  };
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  // ) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: name === "goal" ? value : Number(value),
+  //   }));
+  // };
 
-  // ۲. متد handleSave جدید
-  const handleContinue = () => {
-    if (currentUser) {
-      // ارسال ایمیل کاربر و آبجکتِ تغییرات
-      updateUserData(currentUser.email, {
-        age: formData.age,
-        weight: formData.weight,
-        height: formData.height,
-        goal: formData.goal as
-          | "lose weight"
-          | "maintain weight"
-          | "gain muscle",
-      });
-      onNext();
-    } else {
-      console.error("کاربر لاگین نیست!");
-    }
-  };
+  // // ۲. متد handleSave جدید
+  // const handleContinue = () => {
+  //   if (currentUser) {
+  //     // ارسال ایمیل کاربر و آبجکتِ تغییرات
+  //     updateUserData(currentUser.email, {
+  //       age: formData.age,
+  //       weight: formData.weight,
+  //       height: formData.height,
+  //       goal: formData.goal as
+  //         | "lose weight"
+  //         | "maintain weight"
+  //         | "gain muscle",
+  //     });
+  //     onNext();
+  //   } else {
+  //     console.error("کاربر لاگین نیست!");
+  //   }
+  // };
 
   return (
     <main>
@@ -78,13 +76,13 @@ const GetDataUserStep2 = ({ onBack, onNext }) => {
           name="weight"
           min="1"
           type="number"
-          value={formData.weight ?? ""}
+          // value={}
           onKeyDown={(e) => {
             if (e.key === "-") {
               e.preventDefault();
             }
           }}
-          onChange={handleChange}
+          // onChange={}
           className="
               h-[29px]
               w-full
@@ -114,13 +112,13 @@ const GetDataUserStep2 = ({ onBack, onNext }) => {
           name="height"
           type="number"
           min="1"
-          value={formData.height ?? ""}
+          // value={}
           onKeyDown={(e) => {
             if (e.key === "-") {
               e.preventDefault();
             }
           }}
-          onChange={handleChange}
+          // onChange={}
           className="
               h-[29px]
               w-full
@@ -140,7 +138,7 @@ const GetDataUserStep2 = ({ onBack, onNext }) => {
       {/* Continue */}
       <button
         type="button"
-        onClick={handleContinue}
+        // onClick={}
         className="
           fixed
           bottom-10

@@ -9,10 +9,10 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router";
 import { useAuthStore } from "../store/useAuthStore";
+import { signup } from "../api/auth";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);
-  // ۱. تعریف Draft State (همه اطلاعات فرم اینجا جمع می‌شود)
   const [draft, setDraft] = useState({
     username: "",
     email: "",
@@ -20,36 +20,40 @@ const Signup = () => {
   });
   const navigate = useNavigate();
 
-
-  const signUp = useAuthStore((state) => state.signUp);
-
-  // تابع کمکی برای آپدیت راحت‌تر در Draft
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setDraft((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSignUp = (e: React.FormEvent) => {
+  const setToken = useAuthStore((state) => state.setToken);
+  const handleSignUp = async (e: React.FormEvent<Element>) => {
     e.preventDefault();
 
-    // ۲. اعتبارسنجی (Validation) روی داده‌های Draft
-    if (draft.username.length < 3) {
-      alert("نام کاربری خیلی کوتاه است");
-      return;
-    }
-    if (!draft.email.includes("@")) {
-      alert("ایمیل معتبر نیست");
-      return;
-    }
-
-    const isSuccess = signUp(draft.email, draft.password, draft.username);
-
-
-    if (isSuccess) {
+    try {
+      const data = await signup(draft.username, draft.email, draft.password);
+      setToken(data.jwt);
+      console.log(data.jwt, "jwt");
       navigate("/getdata");
-    } else {
-      alert("خطا در ثبت‌نام.");
+    } catch (error) {
+      console.log(error);
     }
+
+    // if (draft.username.length < 3) {
+    //   alert("نام کاربری خیلی کوتاه است");
+    //   return;
+    // }
+    // if (!draft.email.includes("@")) {
+    //   alert("ایمیل معتبر نیست");
+    //   return;
+    // }
+
+    // const isSuccess = signUp(draft.email, draft.password, draft.username);
+
+    // if (isSuccess) {
+    //   navigate("/getdata");
+    // } else {
+    //   alert("خطا در ثبت‌نام.");
+    // }
   };
 
   return (

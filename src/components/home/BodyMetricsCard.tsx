@@ -1,20 +1,7 @@
-import { useAuthStore } from "../../store/useAuthStore";
-import { useUserData } from "../../store/useUserData";
+
 
 const BodyMetricsCard = () => {
-  const currentUser = useAuthStore((state) => state.currentUser);
-  const email = currentUser?.email;
 
-  // گرفتن دیتا از داخل آبجکت پروفایل بر اساس ایمیل
-  const weight = useUserData((state) =>
-    email ? state.userProfiles[email]?.weight : null,
-  );
-  const height = useUserData((state) =>
-    email ? state.userProfiles[email]?.height : null,
-  );
-
-  // محاسبه BMI: وزن تقسیم بر مجذور قد (متر)
-  const bmi = height > 0 ? (weight / Math.pow(height / 100, 2)).toFixed(1) : 0;
 
   return (
     <div className="bg-slate-900 text-white p-6 rounded-3xl w-full shadow-xl">
@@ -38,7 +25,7 @@ const BodyMetricsCard = () => {
             </div>
             <span>Weight</span>
           </div>
-          <span className="font-bold">{weight} kg</span>
+          <span className="font-bold">{} kg</span>
         </div>
 
         <div className="flex justify-between items-center">
@@ -48,7 +35,7 @@ const BodyMetricsCard = () => {
             </div>
             <span>Height</span>
           </div>
-          <span className="font-bold">{height} cm</span>
+          <span className="font-bold">{} cm</span>
         </div>
       </div>
 
@@ -57,7 +44,7 @@ const BodyMetricsCard = () => {
       {/* بخش BMI */}
       <div className="flex justify-between items-end mb-2">
         <span className="text-gray-300">BMI</span>
-        <span className="text-emerald-500 font-bold text-xl">{bmi}</span>
+        <span className="text-emerald-500 font-bold text-xl">{}</span>
       </div>
 
       {/* نوار رنگی BMI */}

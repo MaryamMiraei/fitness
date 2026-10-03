@@ -1,19 +1,17 @@
 import BodyMetricsCard from "../components/home/BodyMetricsCard";
 import ChartData from "../components/home/ChartData";
-import { useAuthStore } from "../store/useAuthStore";
-import { useUserData } from "../store/useUserData";
 
 const Home = () => {
-  const userName = useAuthStore(
-    (state) => state.currentUser?.userName || "User",
-  );
+  // const userName = useAuthStore(
+  //   (state) => state.currentUser?.userName || "User",
+  // );
 
   return (
     <div className="mb-16 lg:mb-0 lg:ml-64  flex flex-col min-h-screen bg-[#0b1120]">
       {/* بخش سبز رنگ بالای صفحه */}
       <div className="bg-emerald-500 p-6 pb-24 text-white rounded-b-3xl ">
         <p className="text-sm opacity-80 mb-1">Welcome back</p>
-        <h1 className="text-3xl font-bold">Hi there! 👋 {userName}</h1>
+        <h1 className="text-3xl font-bold">Hi there! 👋 {}</h1>
 
         {/* بنر دعوت به اقدام */}
         <div className="mt-6 bg-emerald-600/50 p-4 rounded-xl flex items-center gap-3 backdrop-blur-sm">

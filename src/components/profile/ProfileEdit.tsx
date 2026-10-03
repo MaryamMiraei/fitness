@@ -1,51 +1,49 @@
-import { useState } from "react";
-import { useUserData } from "../../store/useUserData";
-import { useAuthStore } from "../../store/useAuthStore";
+
 
 interface IProfileEdit {
   onClose: () => void;
 }
 
 const ProfileEdit = ({ onClose }: IProfileEdit) => {
-  const updateUserData = useUserData((state) => state.updateUserData);
-  const currentUser = useAuthStore((state) => state.currentUser);
-  const userData = useUserData((state) =>
-    currentUser ? state.userProfiles[currentUser.email] : null,
-  );
+  // const updateUserData = useUserData((state) => state.updateUserData);
+  // const currentUser = useAuthStore((state) => state.currentUser);
+  // const userData = useUserData((state) =>
+  //   currentUser ? state.userProfiles[currentUser.email] : null,
+  // );
 
-  const [formData, setFormData] = useState({
-    age: userData?.age ?? 0,
-    weight: userData?.weight ?? 0,
-    height: userData?.height ?? 0,
-    goal: userData?.goal ?? "maintain weight",
-  });
+  // const [formData, setFormData] = useState({
+  //   age: userData?.age ?? 0,
+  //   weight: userData?.weight ?? 0,
+  //   height: userData?.height ?? 0,
+  //   goal: userData?.goal ?? "maintain weight",
+  // });
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: name === "goal" ? value : Number(value),
-    }));
-  };
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  // ) => {
+  //   const { name, value } = e.target;
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     [name]: name === "goal" ? value : Number(value),
+  //   }));
+  // };
 
-  const handleSave = () => {
-    if (currentUser) {
-      updateUserData(currentUser.email, {
-        age: formData.age,
-        weight: formData.weight,
-        height: formData.height,
-        goal: formData.goal as
-          | "lose weight"
-          | "maintain weight"
-          | "gain muscle",
-      });
-      onClose();
-    } else {
-      console.error("کاربر لاگین نیست!");
-    }
-  };
+  // const handleSave = () => {
+  //   if (currentUser) {
+  //     updateUserData(currentUser.email, {
+  //       age: formData.age,
+  //       weight: formData.weight,
+  //       height: formData.height,
+  //       goal: formData.goal as
+  //         | "lose weight"
+  //         | "maintain weight"
+  //         | "gain muscle",
+  //     });
+  //     onClose();
+  //   } else {
+  //     console.error("کاربر لاگین نیست!");
+  //   }
+  // };
 
   return (
     <div>
@@ -59,8 +57,8 @@ const ProfileEdit = ({ onClose }: IProfileEdit) => {
           label="Age"
           name="age"
           type="number"
-          value={formData.age}
-          onChange={handleChange}
+          // value={formData.age}
+          // onChange={handleChange}
         />
 
         {/* Weight Field */}
@@ -68,8 +66,8 @@ const ProfileEdit = ({ onClose }: IProfileEdit) => {
           label="Weight (kg)"
           name="weight"
           type="number"
-          value={formData.weight}
-          onChange={handleChange}
+          // value={formData.weight}
+          // onChange={handleChange}
         />
 
         {/* Height Field */}
@@ -77,8 +75,8 @@ const ProfileEdit = ({ onClose }: IProfileEdit) => {
           label="Height (cm)"
           name="height"
           type="number"
-          value={formData.height}
-          onChange={handleChange}
+          // value={formData.height}
+          // onChange={handleChange}
         />
 
         {/* Goal Field */}
@@ -88,8 +86,8 @@ const ProfileEdit = ({ onClose }: IProfileEdit) => {
           </label>
           <select
             name="goal"
-            value={formData.goal}
-            onChange={handleChange}
+            // value={formData.goal}
+            // onChange={handleChange}
             className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all cursor-pointer"
           >
             <option value="lose weight">Lose Weight</option>
@@ -108,7 +106,7 @@ const ProfileEdit = ({ onClose }: IProfileEdit) => {
           Cancel
         </button>
         <button
-          onClick={handleSave}
+          // onClick={handleSave}
           className="flex-1 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold shadow-lg shadow-emerald-900/20 transition-all flex items-center justify-center gap-2"
         >
           Save Changes

@@ -8,46 +8,51 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router";
 import { useAuthStore } from "../store/useAuthStore";
+import { signin } from "../api/auth";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
-  // ۱. ایجاد Draft State برای اطلاعات ورود
   const [draft, setDraft] = useState({
     email: "",
     password: "",
   });
 
-  // ۲. دریافت توابع مورد نیاز از استور (با استفاده از Selector)
-  const signIn = useAuthStore((state) => state.signIn);
-  const currentUser = useAuthStore((state) => state.currentUser);
+  // const signIn = useAuthStore((state) => state.signIn);
+  // const currentUser = useAuthStore((state) => state.currentUser);
 
-  // تابع مدیریت تغییرات اینپوت‌ها
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setDraft((prev) => ({ ...prev, [name]: value }));
   };
+  const setToken = useAuthStore((state) => state.setToken);
 
-  const handleSignIn = (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
+    try {
+      const data = await signin(draft.email, draft.password);
+      setToken(data.jwt);
 
-    // ۳. اعتبار سنجی اولیه (Validation)
-    if (!draft.email || !draft.password) {
-      alert("لطفاً همه فیلدها را پر کنید");
-      return;
+      navigate("/home");
+    } catch (error) {
+      console.error(error);
     }
 
-    // ۴. تلاش برای ورود از طریق استور
-    const isSuccess = signIn(draft.email, draft.password);
+    // if (!draft.email || !draft.password) {
+    //   alert("لطفاً همه فیلدها را پر کنید");
+    //   return;
+    // }
 
-    if (isSuccess) {
-      alert("خوش آمدید!");
-      navigate("/home"); // هدایت به صفحه اصلی بعد از ورود موفق
-    } else {
-      alert("ایمیل یا پسورد اشتباه است.");
-    }
+    // const isSuccess = signIn(draft.email, draft.password);
+
+    // if (isSuccess) {
+    //   alert("خوش آمدید!");
+    //   navigate("/home"); // هدایت به صفحه اصلی بعد از ورود موفق
+    // } else {
+    //   alert("ایمیل یا پسورد اشتباه است.");
+    // }
   };
 
   return (
@@ -193,9 +198,8 @@ const SignIn = () => {
           </Link>
         </p>
       </div>
-
     </main>
   );
-};;
+};
 
 export default SignIn;

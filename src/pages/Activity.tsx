@@ -1,22 +1,19 @@
 import { useState } from "react";
 import AddActivityBottom from "../components/activity/AddActivityBottom";
 import AddActivityModal from "../components/activity/AddActivityModal";
-import { useAuthStore } from "../store/useAuthStore";
-import { useUserData } from "../store/useUserData";
 import AddActivityList from "../components/activity/AddActivityList";
-import { getDailyCalorieBurn} from "../utils/calorieUtils";
 
 const Activity = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const open = () => setModalOpen(true);
   const close = () => setModalOpen(false);
 
-  const currentUser = useAuthStore((state) => state.currentUser);
-  const activityWorkouts = useUserData((state) =>
-    currentUser ? state.userProfiles[currentUser.email]?.activityWorkouts : [],
-  );
+  // const currentUser = useAuthStore((state) => state.currentUser);
+  // const activityWorkouts = useUserData((state) =>
+  //   currentUser ? state.userProfiles[currentUser.email]?.activityWorkouts : [],
+  // );
 
-  const todayCalorieBurn = getDailyCalorieBurn(activityWorkouts);
+  // const todayCalorieBurn = getDailyCalorieBurn(activityWorkouts);
 
   return (
     <div className="mb-16 lg:ml-64 lg:mb-0 bg-[#0f172a] text-white min-h-screen">
@@ -29,7 +26,7 @@ const Activity = () => {
         <div className="text-right">
           <p className="text-gray-400 text-sm">Today's Total</p>
           <span className="text-emerald-500 font-bold text-2xl">
-            {todayCalorieBurn} kcal
+            {} kcal
           </span>
         </div>
       </div>

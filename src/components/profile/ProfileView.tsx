@@ -1,26 +1,23 @@
-import { useAuthStore } from '../../store/useAuthStore';
-import { useUserData } from '../../store/useUserData';
+
 
 interface IProfileView {
-  onEdit: ()=>void;
+  onEdit: () => void;
 }
-const ProfileView = ({ onEdit }:IProfileView) => {
-  // ۱. گرفتن ایمیل کاربر لاگین شده
-  const currentUserEmail = useAuthStore((state) => state.currentUser?.email);
+const ProfileView = ({ onEdit }: IProfileView) => {
+  // const currentUserEmail = useAuthStore((state) => state.currentUser?.email);
 
-  // ۲. گرفتن دیتای مخصوص همین کاربر (با استفاده از Selector)
-  const userData = useUserData((state) =>
-    currentUserEmail ? state.userProfiles[currentUserEmail] : null,
-  );
-  
-  // ۳. مدیریت حالت "عدم وجود اطلاعات"
-  if (!userData) {
-    return (
-      <div className="flex items-center justify-center h-full p-8 text-gray-500">
-        <p>اطلاعات پروفایل یافت نشد. لطفاً ابتدا پروفایل خود را تکمیل کنید.</p>
-      </div>
-    );
-  }
+  // const userData = useUserData((state) =>
+  //   currentUserEmail ? state.userProfiles[currentUserEmail] : null,
+  // );
+
+
+  // if (!userData) {
+  //   return (
+  //     <div className="flex items-center justify-center h-full p-8 text-gray-500">
+  //       <p>اطلاعات پروفایل یافت نشد. لطفاً ابتدا پروفایل خود را تکمیل کنید.</p>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="space-y-4">
@@ -50,7 +47,7 @@ const ProfileView = ({ onEdit }:IProfileView) => {
         <div>
           <p className="text-sm text-slate-500">Age</p>
           <p className="font-semibold text-white">
-            {userData.age !== null ? `${userData.age} years` : "Not set"}
+            {/* {userData.age !== null ? `${userData.age} years` : "Not set"} */}
           </p>
         </div>
       </div>
@@ -81,7 +78,7 @@ const ProfileView = ({ onEdit }:IProfileView) => {
         <div>
           <p className="text-sm text-slate-500">Weight</p>
           <p className="font-semibold text-white">
-            {userData.weight !== null ? `${userData.weight} kg` : "Not set"}
+            {/* {userData.weight !== null ? `${userData.weight} kg` : "Not set"} */}
           </p>
         </div>
       </div>
@@ -109,7 +106,7 @@ const ProfileView = ({ onEdit }:IProfileView) => {
         <div>
           <p className="text-sm text-slate-500">Height</p>
           <p className="font-semibold text-white">
-            {userData.height !== null ? `${userData.height} cm` : "Not set"}
+            {/* {userData.height !== null ? `${userData.height} cm` : "Not set"} */}
           </p>
         </div>
       </div>
@@ -139,7 +136,7 @@ const ProfileView = ({ onEdit }:IProfileView) => {
         <div>
           <p className="text-sm text-slate-500">Goal</p>
           <p className="font-semibold text-white">
-            {userData.goal || "maintain weight"}
+            {/* {userData.goal || "maintain weight"} */}
           </p>
         </div>
       </div>
@@ -154,4 +151,4 @@ const ProfileView = ({ onEdit }:IProfileView) => {
   );
 };
 
-export default ProfileView
+export default ProfileView;

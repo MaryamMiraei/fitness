@@ -1,53 +1,48 @@
-import React, { useState } from 'react'
-import { useAuthStore } from '../../store/useAuthStore';
-import { useUserData } from '../../store/useUserData';
-import type { activityWorkout } from '../../types';
-
 interface IAddActivityModal {
   close: () => void;
 }
 
-const AddActivityModal = ({ close}: IAddActivityModal) => {
-  const currentUser = useAuthStore((state) => state.currentUser);
-  const addActivityWorkout = useUserData((state) => state.addActivityWorkout);
+const AddActivityModal = ({ close }: IAddActivityModal) => {
+  // const currentUser = useAuthStore((state) => state.currentUser);
+  // const addActivityWorkout = useUserData((state) => state.addActivityWorkout);
 
-  const [activityWorkoutDraft, setActivityWorkoutDraft] =
-    useState<activityWorkout>({
-      id: crypto.randomUUID(),
-      name: "",
-      calories: 0,
-      duration: 0,
-      timestamp: new Date(),
-    });
-console.log(activityWorkoutDraft);
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  ) => {
-    const { name, value } = e.target;
-    setActivityWorkoutDraft((prev) => ({
-      ...prev,
-      [name]: name === "name" ? value : Number(value),
-    }));
-  };
+  // const [activityWorkoutDraft, setActivityWorkoutDraft] =
+  //   useState<activityWorkout>({
+  //     id: crypto.randomUUID(),
+  //     name: "",
+  //     calories: 0,
+  //     duration: 0,
+  //     timestamp: new Date(),
+  //   });
+  // console.log(activityWorkoutDraft);
+  // const handleChange = (
+  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  // ) => {
+  //   const { name, value } = e.target;
+  //   setActivityWorkoutDraft((prev) => ({
+  //     ...prev,
+  //     [name]: name === "name" ? value : Number(value),
+  //   }));
+  // };
 
-  const handleSave = () => {
-    if (currentUser) {
-      addActivityWorkout(currentUser.email, {
-        id: activityWorkoutDraft.id,
-        name: activityWorkoutDraft.name,
-        calories: activityWorkoutDraft.calories,
-        duration: activityWorkoutDraft.duration,
-        timestamp: activityWorkoutDraft.timestamp,
-      });
-      close();
-    } else {
-      console.error("کاربر لاگین نیست!");
-    }
-  };
+  // const handleSave = () => {
+  //   if (currentUser) {
+  //     addActivityWorkout(currentUser.email, {
+  //       id: activityWorkoutDraft.id,
+  //       name: activityWorkoutDraft.name,
+  //       calories: activityWorkoutDraft.calories,
+  //       duration: activityWorkoutDraft.duration,
+  //       timestamp: activityWorkoutDraft.timestamp,
+  //     });
+  //     close();
+  //   } else {
+  //     console.error("کاربر لاگین نیست!");
+  //   }
+  // };
 
   return (
     <div>
-      <div className="w-full max-w-lg rounded-2xl border border-slate-700 bg-[#0f172a] p-5 text-white shadow-2xl">
+      {/* <div className="w-full max-w-lg rounded-2xl border border-slate-700 bg-[#0f172a] p-5 text-white shadow-2xl">
         <h2 id="new-food-entry-title" className="mb-5 text-lg font-semibold">
           New Activity workout
         </h2>
@@ -100,7 +95,6 @@ console.log(activityWorkoutDraft);
             />
           </label>
 
-
           <div className="flex gap-3 pt-2">
             <button
               type="button"
@@ -119,9 +113,9 @@ console.log(activityWorkoutDraft);
             </button>
           </div>
         </form>
-      </div>
+      </div> */}
     </div>
   );
 };
 
-export default AddActivityModal
+export default AddActivityModal;

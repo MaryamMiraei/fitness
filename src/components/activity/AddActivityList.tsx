@@ -1,35 +1,31 @@
-import React, { useState } from "react";
-import { useAuthStore } from "../../store/useAuthStore";
-import { useUserData } from "../../store/useUserData";
-import { getTodayEntries } from "../../utils/calorieUtils";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
-import AddActivityListEmpty from "./AddActivityListEmpty";
 
 const AddActivityList = () => {
-  const currentUser = useAuthStore((state) => state.currentUser);
-  const activityWorkouts = useUserData((state) =>
-    currentUser ? state.userProfiles[currentUser?.email]?.activityWorkouts : [],
-  );
- 
-  const todayActivityWorkouts = getTodayEntries(activityWorkouts);
-const totalActivityToday = todayActivityWorkouts.reduce((total,workout)=> total+workout.duration,0)
-  console.log(todayActivityWorkouts, "today");
- 
-  const removeActivityWorkout = useUserData(
-    (state) => state.removeActivityWorkout,
-  );
-  const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
+  // const currentUser = useAuthStore((state) => state.currentUser);
+  // const activityWorkouts = useUserData((state) =>
+  //   currentUser ? state.userProfiles[currentUser?.email]?.activityWorkouts : [],
+  // );
 
-  const handleDelete = () => {
-    if (!entryToDelete || !currentUser) return;
-    removeActivityWorkout(currentUser?.email, entryToDelete);
-    setEntryToDelete(null);
-  };
+  // const todayActivityWorkouts = getTodayEntries(activityWorkouts);
+  // const totalActivityToday = todayActivityWorkouts.reduce(
+  //   (total, workout) => total + workout.duration,
+  //   0,
+  // );
+  // console.log(todayActivityWorkouts, "today");
+
+  // const removeActivityWorkout = useUserData(
+  //   (state) => state.removeActivityWorkout,
+  // );
+  // const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
+
+  // const handleDelete = () => {
+  //   if (!entryToDelete || !currentUser) return;
+  //   removeActivityWorkout(currentUser?.email, entryToDelete);
+  //   setEntryToDelete(null);
+  // };
 
   return (
     <div className="mb-[64px] lg:mb-0">
-      {todayActivityWorkouts.length === 0 ? (
+      {/* {todayActivityWorkouts.length === 0 ? (
         <AddActivityListEmpty />
       ) : (
         <div className="rounded-xl border border-slate-700 bg-[#0f172a] p-4 text-white">
@@ -140,7 +136,7 @@ const totalActivityToday = todayActivityWorkouts.reduce((total,workout)=> total+
             </div>
           )}
         </div>
-      )}
+      )} */}
     </div>
   );
 };
