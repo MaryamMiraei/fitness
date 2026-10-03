@@ -1,10 +1,43 @@
+import { useEffect, useState } from "react";
 import type { MealType } from "../../types";
+import { getFoodLogs, getTodayFoodLogs } from "../../api/food";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import AddFoodListEmpty from "./AddFoodListEmpty";
 
 interface IAddFood {
   meals: { type: MealType; label: string; icon: string }[];
 }
 
 const AddFoodList = ({ meals }: IAddFood) => {
+   const [foodLogs, setFoodLogs] = useState<FoodLog[]>([]);
+   const [loading, setLoading] = useState(true);
+   const [error, setError] = useState("");
+
+   useEffect(() => {
+     const fetchFoodLogs = async () => {
+       try {
+         const data = await getTodayFoodLogs();
+
+         setFoodLogs(data);
+       } catch (error) {
+         console.log(error);
+         setError("Failed to load food logs");
+       } finally {
+         setLoading(false);
+       }
+     };
+
+     fetchFoodLogs();
+   }, []);
+
+   if (loading) {
+     return <p>Loading...</p>;
+   }
+
+   if (error) {
+     return <p>{error}</p>;
+   }
   // const currentUser = useAuthStore((state) => state.currentUser);
   // const foodEntries = useUserData((state) =>
   //   currentUser ? state.userProfiles[currentUser?.email]?.foodEntries : [],
@@ -21,12 +54,12 @@ const AddFoodList = ({ meals }: IAddFood) => {
 
   return (
     <div className="mb-[64px] lg:mb-0">
-      {/* {todayFoodEntry.length === 0 ? (
+      {foodLogs.length === 0 ? (
         <AddFoodListEmpty />
       ) : (
         <div className="space-y-4">
           {meals.map((meal) => {
-            const filteredEntries = todayFoodEntry.filter(
+            const filteredEntries = foodLogs.filter(
               (e) => e.mealType === meal.type,
             );
             const mealCalories = filteredEntries.reduce(
@@ -68,18 +101,18 @@ const AddFoodList = ({ meals }: IAddFood) => {
                         <span className="text-slate-400">
                           {entry.calories} kcal
                         </span>
-                        <button
+                        {/* <button
                           type="button"
                           className="p-1 text-red-400 hover:text-red-600"
                           onClick={() => setEntryToDelete(entry.id)}
                         >
                           <FontAwesomeIcon icon={faTrashAlt} />
-                        </button>
+                        </button> */}
                       </div>
                     </li>
                   ))}
                 </ul>
-                {entryToDelete && (
+                {/* {entryToDelete && (
                   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
                     <div className="w-[350px] rounded-xl bg-slate-900 p-6">
                       <h2 className="text-lg font-semibold text-white">
@@ -109,12 +142,12 @@ const AddFoodList = ({ meals }: IAddFood) => {
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
             );
           })}
         </div>
-      )} */}
+      )}
     </div>
   );
 };

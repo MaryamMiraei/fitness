@@ -3,7 +3,6 @@ import AddFoodBottom from "../components/food/AddFoodBottom";
 import AddFoodModal from "../components/food/AddFoodModal";
 import AddFoodList from "../components/food/AddFoodList";
 import type { MealType } from "../types";
-import { getDailyCalorieIntake, getTodayEntries } from "../utils/calorieUtils";
 
 const Food = () => {
   const [isModalOpen, setModalOpen] = useState(false);
@@ -45,7 +44,7 @@ const Food = () => {
         {isModalOpen ? (
           <AddFoodModal close={close} meals={meals} />
         ) : (
-          <AddFoodBottom open={open} meals={meals} />
+          <AddFoodBottom open={open}/>
         )}
 
         {/* Right Side */}

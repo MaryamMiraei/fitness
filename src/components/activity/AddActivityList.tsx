@@ -1,5 +1,9 @@
 
+
 const AddActivityList = () => {
+  
+   
+
   // const currentUser = useAuthStore((state) => state.currentUser);
   // const activityWorkouts = useUserData((state) =>
   //   currentUser ? state.userProfiles[currentUser?.email]?.activityWorkouts : [],

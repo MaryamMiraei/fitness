@@ -3,6 +3,7 @@ interface IAddActivityModal {
 }
 
 const AddActivityModal = ({ close }: IAddActivityModal) => {
+  
   // const currentUser = useAuthStore((state) => state.currentUser);
   // const addActivityWorkout = useUserData((state) => state.addActivityWorkout);
 
