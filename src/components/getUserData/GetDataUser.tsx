@@ -1,10 +1,56 @@
 import { useState } from "react";
-import GetDataUserStep1 from "../components/getUserData/GetDataUserStep1";
-import GetDataUserStep2 from "../components/getUserData/GetDataUserStep2";
-import GetDataUserStep3 from "../components/getUserData/GetDataUserStep3";
+import GetDataUserStep1 from "./GetDataUserStep1";
+import GetDataUserStep2 from "./GetDataUserStep2";
+import GetDataUserStep3 from "./GetDataUserStep3";
+import { getMyProfile, updateMyProfile } from "../../api/userDataProfileAPI";
+import { useNavigate } from "react-router";
 
 const GetUserData = () => {
   const [step, setStep] = useState(1);
+  const navigate = useNavigate();
+  const [formData, setFormData] = useState<UserPost>({
+    age: 0,
+    weight: 0,
+    height: 0,
+    goal: "maintain weight",
+    dailyCalorieIntake: 0,
+    dailyCalorieBurn: 0,
+  });
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: name === "goal" ? value : Number(value),
+    }));
+  };
+
+  const handleGoalChange = (
+    goal: Goals,
+    dailyCalorieBurn: number,
+    dailyCalorieIntake: number,
+  ) => {
+    setFormData((prev) => ({
+      ...prev,
+      goal,
+      dailyCalorieBurn,
+      dailyCalorieIntake,
+    }));
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const user = await getMyProfile();
+      await updateMyProfile(user.id, formData);
+      navigate("/home");
+
+      console.log("Profile updated");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-bg-dark px-7 py-4 text-text-primary flex justify-center">
@@ -65,16 +111,32 @@ const GetUserData = () => {
           <p className="mt-2 text-sm text-text-secondary">Step 1 of 3</p>
         </div>
 
-        {step === 1 && <GetDataUserStep1 onNext={() => setStep(2)} />}
+        {step === 1 && (
+          <GetDataUserStep1
+            onNext={() => setStep(2)}
+            formData={formData}
+            handleChange={handleChange}
+          />
+        )}
 
         {step === 2 && (
           <GetDataUserStep2
             onBack={() => setStep(1)}
             onNext={() => setStep(3)}
+            formData={formData}
+            handleChange={handleChange}
           />
         )}
 
-        {step === 3 && <GetDataUserStep3 onBack={() => setStep(2)} />}
+        {step === 3 && (
+          <GetDataUserStep3
+            onBack={() => setStep(2)}
+            formData={formData}
+            handleChange={handleChange}
+            handleGoalChange={handleGoalChange}
+            handleSubmit={handleSubmit}
+          />
+        )}
       </section>
     </main>
   );

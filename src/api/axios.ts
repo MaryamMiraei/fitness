@@ -1,5 +1,4 @@
 import axios from "axios";
-import { useAuthStore } from "../store/useAuthStore";
 
 const api = axios.create({
   baseURL: "https://strapi.greatstack.in/api",
@@ -7,7 +6,7 @@ const api = axios.create({
 
 // Request Interceptor
 api.interceptors.request.use((config) => {
-  const token = useAuthStore.getState().token;
+  const token = localStorage.getItem("token")
 
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
@@ -21,7 +20,8 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      useAuthStore.getState().logout();
+        localStorage.removeItem("token");
+        localStorage.removeItem("username");
     }
 
     return Promise.reject(error);

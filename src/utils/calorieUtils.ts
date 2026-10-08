@@ -11,3 +11,5 @@ export const getTodayEntries = <T extends { createdAt: string }>( entries: T[]):
     return date >= startOfToday && date < startOfTomorrow;
   });
 };
+
+

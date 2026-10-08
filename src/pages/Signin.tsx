@@ -7,7 +7,6 @@ import {
   faEyeSlash,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router";
-import { useAuthStore } from "../store/useAuthStore";
 import { signin } from "../api/authAPI";
 
 const SignIn = () => {
@@ -20,21 +19,17 @@ const SignIn = () => {
     password: "",
   });
 
-  // const signIn = useAuthStore((state) => state.signIn);
-  // const currentUser = useAuthStore((state) => state.currentUser);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setDraft((prev) => ({ ...prev, [name]: value }));
   };
-  const setToken = useAuthStore((state) => state.setToken);
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
       const data = await signin(draft.email, draft.password);
-      setToken(data.jwt);
-
+      localStorage.getItem("token");
       navigate("/home");
     } catch (error) {
       console.error(error);

@@ -9,7 +9,7 @@ import Profile from "./pages/Profile";
 import SignLayout from "./layouts/SignLayout";
 import Signup from "./pages/Signup";
 import GetUserDataLayout from "./layouts/GetUserDataLayout";
-import GetUserData from "./pages/GetDataUser";
+import GetUserData from "./components/getUserData/GetDataUser";
 
 const router = createBrowserRouter([
   {

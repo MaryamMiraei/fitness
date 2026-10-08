@@ -1,53 +1,74 @@
-
+import { useEffect, useState } from "react";
+import { getMyProfile, updateMyProfile } from "../../api/userDataProfileAPI";
 
 interface IProfileEdit {
   onClose: () => void;
 }
 
 const ProfileEdit = ({ onClose }: IProfileEdit) => {
-  // const updateUserData = useUserData((state) => state.updateUserData);
-  // const currentUser = useAuthStore((state) => state.currentUser);
-  // const userData = useUserData((state) =>
-  //   currentUser ? state.userProfiles[currentUser.email] : null,
-  // );
+  const [profile, setProfile] = useState<User | null>(null);
+  const [formDraft, setFormDraft] = useState({
+    age: 0,
+    weight: 0,
+    height: 0,
+    goal: "maintain" as Goals,
+  });
+  const [loading, setLoading] = useState(true);
 
-  // const [formData, setFormData] = useState({
-  //   age: userData?.age ?? 0,
-  //   weight: userData?.weight ?? 0,
-  //   height: userData?.height ?? 0,
-  //   goal: userData?.goal ?? "maintain weight",
-  // });
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await getMyProfile();
 
-  // const handleChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  // ) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [name]: name === "goal" ? value : Number(value),
-  //   }));
-  // };
+        setProfile(data);
+        setFormDraft({
+          age: data.age,
+          weight: data.weight,
+          height: data.height,
+          goal: data.goal,
+        });
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // const handleSave = () => {
-  //   if (currentUser) {
-  //     updateUserData(currentUser.email, {
-  //       age: formData.age,
-  //       weight: formData.weight,
-  //       height: formData.height,
-  //       goal: formData.goal as
-  //         | "lose weight"
-  //         | "maintain weight"
-  //         | "gain muscle",
-  //     });
-  //     onClose();
-  //   } else {
-  //     console.error("کاربر لاگین نیست!");
-  //   }
-  // };
+    fetchProfile();
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!profile) {
+    return <p>Profile not found</p>;
+  }
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
+  ) => {
+    const { name, value } = e.target;
+    setFormDraft((prev) => ({
+      ...prev,
+      [name]: name === "goal" ? value : Number(value),
+    }));
+  };
+
+  const handleSave = async () => {
+    if (!profile) return;
+    try {
+      const updateProfile = await updateMyProfile(profile.id, formDraft);
+      setProfile(updateProfile);
+      onClose();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-8">
+      <div className="flex items-center justify-between">
         <h2 className="text-xl font-bold text-white">Edit Your Profile</h2>
       </div>
 
@@ -57,8 +78,8 @@ const ProfileEdit = ({ onClose }: IProfileEdit) => {
           label="Age"
           name="age"
           type="number"
-          // value={formData.age}
-          // onChange={handleChange}
+          value={formDraft.age}
+          onChange={handleChange}
         />
 
         {/* Weight Field */}
@@ -66,8 +87,8 @@ const ProfileEdit = ({ onClose }: IProfileEdit) => {
           label="Weight (kg)"
           name="weight"
           type="number"
-          // value={formData.weight}
-          // onChange={handleChange}
+          value={formDraft.weight}
+          onChange={handleChange}
         />
 
         {/* Height Field */}
@@ -75,8 +96,8 @@ const ProfileEdit = ({ onClose }: IProfileEdit) => {
           label="Height (cm)"
           name="height"
           type="number"
-          // value={formData.height}
-          // onChange={handleChange}
+          value={formDraft.height}
+          onChange={handleChange}
         />
 
         {/* Goal Field */}
@@ -86,8 +107,8 @@ const ProfileEdit = ({ onClose }: IProfileEdit) => {
           </label>
           <select
             name="goal"
-            // value={formData.goal}
-            // onChange={handleChange}
+            value={formDraft.goal}
+            onChange={handleChange}
             className="w-full bg-slate-800 border border-slate-700 rounded-xl p-3 text-white outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all cursor-pointer"
           >
             <option value="lose weight">Lose Weight</option>
@@ -106,7 +127,7 @@ const ProfileEdit = ({ onClose }: IProfileEdit) => {
           Cancel
         </button>
         <button
-          // onClick={handleSave}
+          onClick={handleSave}
           className="flex-1 py-3.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-semibold shadow-lg shadow-emerald-900/20 transition-all flex items-center justify-center gap-2"
         >
           Save Changes

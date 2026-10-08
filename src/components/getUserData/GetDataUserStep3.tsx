@@ -1,71 +1,31 @@
 import { faArrowLeft, faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const GetDataUserStep3 = ({ onBack }) => {
-  // const navigate = useNavigate();
-  // const updateUserData = useUserData((state) => state.updateUserData);
-  // const currentUser = useAuthStore((state) => state.currentUser); // فرض بر داشتنِ ایمیل از auth
-  // const userData = useUserData((state) =>
-  //   currentUser ? state.userProfiles[currentUser.email] : null,
-  // );
-
-  // const [formData, setFormData] = useState({
-  //   age: userData?.age ?? 0,
-  //   weight: userData?.weight ?? 0,
-  //   height: userData?.height ?? 0,
-  //   goal: userData?.goal ?? "maintain weight",
-  //   dailyCalorieIntakeGoal: userData?.dailyCalorieIntakeGoal ?? 0,
-  //   dailyCaloriesBurnGoal: userData?.dailyCaloriesBurnGoal ?? 0,
-  // });
-
-  // const handleChange = (
-  //   e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
-  // ) => {
-  //   const { name, value } = e.target;
-  //   setFormData((prev) => ({
-  //     ...prev,
-  //     [name]: name === "goal" ? value : Number(value),
-  //   }));
-  // };
-
-  // const handleGoalSelect = (goalValue: string) => {
-  //   setFormData((prev) => ({ ...prev, goal: goalValue as any }));
-  // };
-
-  // // ۲. متد handleSave جدید
-  // const handleContinue = () => {
-  //   if (currentUser) {
-  //     // ارسال ایمیل کاربر و آبجکتِ تغییرات
-  //     updateUserData(currentUser.email, {
-  //       age: formData.age,
-  //       weight: formData.weight,
-  //       height: formData.height,
-  //       goal: formData.goal as
-  //         | "lose weight"
-  //         | "maintain weight"
-  //         | "gain muscle",
-  //       dailyCalorieIntakeGoal: formData.dailyCalorieIntakeGoal,
-  //       dailyCaloriesBurnGoal: formData.dailyCaloriesBurnGoal,
-  //     });
-
-  //     navigate("/home");
-  //   } else {
-  //     console.error("کاربر لاگین نیست!");
-  //   }
-  // };
-
+const GetDataUserStep3 = ({
+  onBack,
+  formData,
+  handleChange,
+  handleSubmit,
+  handleGoalChange,
+}) => {
   const goals = [
     {
       value: "lose weight",
       label: "Lose Weight",
+      dailyCalorieBurn: 600,
+      dailyCalorieIntake: 1000,
     },
     {
       value: "maintain weight",
       label: "Maintain Weight",
+      dailyCalorieBurn: 300,
+      dailyCalorieIntake: 1800,
     },
     {
       value: "gain muscle",
       label: "Gain Muscle",
+      dailyCalorieBurn: 500,
+      dailyCalorieIntake: 1500,
     },
   ] as const;
 
@@ -93,15 +53,23 @@ const GetDataUserStep3 = ({ onBack }) => {
             key={item.value}
             type="button"
             name="goal"
-            // className={`w-full rounded-xl border px-5 py-2 text-left
-            //   text-sm transition-all duration-200
-            //   ${
-            //     formData.goal === item.value
-            //       ? "border-[#00d9a5] shadow-[0_0_0_1px_#00d9a5]"
-            //       : "border-[#344258]"
-            //   }
-            //   bg-[#202d42] text-white
-            // `}
+            value={item.value}
+            onClick={() =>
+              handleGoalChange(
+                item.value,
+                item.dailyCalorieBurn,
+                item.dailyCalorieIntake,
+              )
+            }
+            className={`w-full rounded-xl border px-5 py-2 text-left
+              text-sm transition-all duration-200
+              ${
+                formData.goal === item.value
+                  ? "border-[#00d9a5] shadow-[0_0_0_1px_#00d9a5]"
+                  : "border-[#344258]"
+              }
+              bg-[#202d42] text-white
+            `}
           >
             {item.label}
           </button>
@@ -126,18 +94,18 @@ const GetDataUserStep3 = ({ onBack }) => {
           </div>
 
           <span className="text-sm font-semibold text-[#00d9a5]">
-            {} kcal
+            {formData.dailyCalorieIntake} kcal
           </span>
         </div>
 
         <input
           type="range"
           name="dailyCalorieIntake"
-          min="1000"
+          min="0"
           max="4000"
           step="50"
-          // value={}
-          // onChange={}
+          value={formData.dailyCalorieIntake}
+          onChange={handleChange}
           className="h-2 w-full cursor-pointer rounded-full
             bg-[#344258]
             accent-[#00d9a5]"
@@ -156,18 +124,18 @@ const GetDataUserStep3 = ({ onBack }) => {
           </div>
 
           <span className="text-sm font-semibold text-[#00d9a5]">
-            {} kcal
+            {formData.dailyCalorieBurn} kcal
           </span>
         </div>
 
         <input
           type="range"
-          name="dailyCaloriesBurn"
+          name="dailyCalorieBurn"
           min="0"
           max="2000"
           step="50"
-          // value={}
-          // onChange={}
+          value={formData.dailyCalorieBurn}
+          onChange={handleChange}
           className="h-2 w-full cursor-pointer rounded-full
             bg-[#344258]
             accent-[#00d9a5]"
@@ -177,7 +145,7 @@ const GetDataUserStep3 = ({ onBack }) => {
       {/* Continue */}
       <button
         type="button"
-        // onClick={}
+        onClick={handleSubmit}
         className="
           fixed
           bottom-10
@@ -197,7 +165,7 @@ const GetDataUserStep3 = ({ onBack }) => {
           hover:bg-button-hover
         "
       >
-        Continue
+        Continue & start
         <FontAwesomeIcon icon={faArrowRight} className="text-[8px]" />
       </button>
       {/* Back */}

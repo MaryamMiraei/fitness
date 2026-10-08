@@ -1,13 +1,41 @@
+import { useEffect, useState } from "react";
+import { getMyProfile } from "../../api/userDataProfileAPI";
 
 
 interface IProfileView {
   onEdit: () => void;
 }
 const ProfileView = ({ onEdit }: IProfileView) => {
+    const [profile, setProfile] = useState<User | null>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+      const fetchProfile = async () => {
+        try {
+          const data = await getMyProfile();
+
+          setProfile(data);
+        } catch (error) {
+          console.error(error);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchProfile();
+    }, []);
+
+    if (loading) {
+      return <p>Loading...</p>;
+    }
+
+    // if (!profile) {
+    //   return <p>Profile not found</p>;
+    // }
 
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 ">
       {/* Age */}
       <div className="bg-slate-800/50 rounded-xl px-4 py-4 flex items-center gap-4 border border-slate-800">
         <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
@@ -34,7 +62,7 @@ const ProfileView = ({ onEdit }: IProfileView) => {
         <div>
           <p className="text-sm text-slate-500">Age</p>
           <p className="font-semibold text-white">
-            {/* {userData.age !== null ? `${userData.age} years` : "Not set"} */}
+            {profile.age !== null ? `${profile.age} years` : "Not set"}
           </p>
         </div>
       </div>
@@ -65,7 +93,7 @@ const ProfileView = ({ onEdit }: IProfileView) => {
         <div>
           <p className="text-sm text-slate-500">Weight</p>
           <p className="font-semibold text-white">
-            {/* {userData.weight !== null ? `${userData.weight} kg` : "Not set"} */}
+            {profile.weight !== null ? `${profile.weight} kg` : "Not set"}
           </p>
         </div>
       </div>
@@ -93,7 +121,7 @@ const ProfileView = ({ onEdit }: IProfileView) => {
         <div>
           <p className="text-sm text-slate-500">Height</p>
           <p className="font-semibold text-white">
-            {/* {userData.height !== null ? `${userData.height} cm` : "Not set"} */}
+            {profile.height !== null ? `${profile.height} cm` : "Not set"}
           </p>
         </div>
       </div>
@@ -123,7 +151,7 @@ const ProfileView = ({ onEdit }: IProfileView) => {
         <div>
           <p className="text-sm text-slate-500">Goal</p>
           <p className="font-semibold text-white">
-            {/* {userData.goal || "maintain weight"} */}
+            {profile.goal || "maintain weight"}
           </p>
         </div>
       </div>

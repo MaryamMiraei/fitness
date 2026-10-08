@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { NavLink } from "react-router";
 
 const SidebarMenu = () => {
-
+  const username = localStorage.getItem("username");
 
   return (
     <nav className="hidden fixed lg:flex flex-col w-64 bg-white dark:bg-slate-900 border-r border-slate-100 dark:border-slate-800 p-6 transition-colors duration-200 min-h-screen">
@@ -94,7 +94,7 @@ const SidebarMenu = () => {
             src="public/Profile user.png"
             alt=""
           />
-          <p>{}</p>
+          <p>{username}</p>
         </div>
       </div>
     </nav>

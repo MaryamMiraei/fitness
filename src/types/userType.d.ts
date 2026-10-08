@@ -1,4 +1,14 @@
- interface User {
+type Goals = "lose weight" | "maintain weight" | "gain muscle";
+
+interface UserPost {
+  age: number;
+  dailyCalorieBurn: number;
+  dailyCalorieIntake: number;
+  goal: Goals;
+  height: number;
+  weight: number;
+}
+interface User {
   id: number;
   documentId: string;
   username: string;
@@ -6,7 +16,7 @@
   age: number;
   height: number;
   weight: number;
-  goal: string;
+  goal: Goals;
   dailyCalorieIntake: number;
   dailyCalorieBurn: number;
   provider: string;
