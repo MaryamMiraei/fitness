@@ -1,7 +1,5 @@
 import { useState } from "react";
-import type { FoodEntry, MealType } from "../../types";
-import { addFoodLog } from "../../api/food";
-
+import { addFoodLog } from "../../api/foodAPI";
 
 interface IAddFoodModal {
   close: () => void;
@@ -9,7 +7,6 @@ interface IAddFoodModal {
 }
 
 const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
-
   const [foodEntriesDraft, setFoodEntriesDraft] = useState<FoodLogPost>({
     name: "",
     calories: 0,
@@ -40,7 +37,6 @@ const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
     }
   };
 
-
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -52,7 +48,6 @@ const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
     }));
   };
 
-
   return (
     <div>
       <div className="w-full max-w-lg rounded-2xl border border-slate-700 bg-[#0f172a] p-5 text-white shadow-2xl">
@@ -60,10 +55,7 @@ const AddFoodModal = ({ close, meals }: IAddFoodModal) => {
           New Food Entry
         </h2>
 
-        <form
-          className="space-y-4"
-          onSubmit={handleSubmit}
-        >
+        <form className="space-y-4" onSubmit={handleSubmit}>
           <label className="block">
             <span className="mb-2 block text-sm text-slate-300">
               Food Name <span className="text-red-500">*</span>

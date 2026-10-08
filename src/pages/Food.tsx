@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AddFoodBottom from "../components/food/AddFoodBottom";
 import AddFoodModal from "../components/food/AddFoodModal";
 import AddFoodList from "../components/food/AddFoodList";
-import type { MealType } from "../types";
 
 const Food = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const open = () => setModalOpen(true);
   const close = () => setModalOpen(false);
+  const [totalCaloriesToday, setTotalCaloriesToday] = useState(0);
 
   const meals: { type: MealType; label: string; icon: string }[] = [
     { type: "breakfast", label: "Breakfast", icon: "public/breakfast.svg" },
@@ -15,12 +15,6 @@ const Food = () => {
     { type: "dinner", label: "Dinner", icon: "public/dinner.svg" },
     { type: "snack", label: "Snack", icon: "public/snack.svg" },
   ];
-
-  // const currentUser = useAuthStore((state) => state.currentUser);
-  // const foodEntries = useUserData((state) =>
-  //   currentUser ? state.userProfiles[currentUser.email]?.foodEntries : [],
-  // );
-  // const dailyCalorieIntake = getDailyCalorieIntake(foodEntries);
 
   return (
     <div className="mb-16 lg:ml-64 lg:mb-0 bg-[#0f172a] text-white min-h-screen">
@@ -33,7 +27,7 @@ const Food = () => {
         <div className="text-right">
           <p className="text-gray-400 text-sm">Today's Total</p>
           <span className="text-emerald-500 font-bold text-2xl">
-            {} kcal
+            {totalCaloriesToday} kcal
           </span>
         </div>
       </div>
@@ -44,11 +38,14 @@ const Food = () => {
         {isModalOpen ? (
           <AddFoodModal close={close} meals={meals} />
         ) : (
-          <AddFoodBottom open={open}/>
+          <AddFoodBottom open={open} />
         )}
 
         {/* Right Side */}
-        <AddFoodList meals={meals} />
+        <AddFoodList
+          meals={meals}
+          setTotalCaloriesToday={setTotalCaloriesToday}
+        />
       </div>
     </div>
   );

@@ -7,13 +7,7 @@ const Activity = () => {
   const [isModalOpen, setModalOpen] = useState(false);
   const open = () => setModalOpen(true);
   const close = () => setModalOpen(false);
-
-  // const currentUser = useAuthStore((state) => state.currentUser);
-  // const activityWorkouts = useUserData((state) =>
-  //   currentUser ? state.userProfiles[currentUser.email]?.activityWorkouts : [],
-  // );
-
-  // const todayCalorieBurn = getDailyCalorieBurn(activityWorkouts);
+  const [totalCaloriesBurnToday, setTotalCaloriesBurnToday]=useState(0);
 
   return (
     <div className="mb-16 lg:ml-64 lg:mb-0 bg-[#0f172a] text-white min-h-screen">
@@ -26,7 +20,7 @@ const Activity = () => {
         <div className="text-right">
           <p className="text-gray-400 text-sm">Today's Total</p>
           <span className="text-emerald-500 font-bold text-2xl">
-            {} kcal
+            {totalCaloriesBurnToday} kcal
           </span>
         </div>
       </div>
@@ -41,7 +35,9 @@ const Activity = () => {
         )}
 
         {/* Right Side */}
-        <AddActivityList />
+        <AddActivityList
+          setTotalCaloriesBurnToday={setTotalCaloriesBurnToday}
+        />
       </div>
     </div>
   );

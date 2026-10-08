@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router";
 import { useAuthStore } from "../store/useAuthStore";
-import { signup } from "../api/auth";
+import { signup } from "../api/authAPI";
 
 const Signup = () => {
   const [showPassword, setShowPassword] = useState(false);

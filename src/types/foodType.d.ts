@@ -1,6 +1,8 @@
+type MealType = "breakfast" | "lunch" | "dinner" | "snack";
+
 interface FoodLogPost {
   name: string;
-  mealType: "breakfast" | "lunch" | "dinner" | "snack";
+  mealType: MealType;
   calories: number;
 }
 
@@ -8,7 +10,7 @@ interface FoodLog {
   id: number;
   documentId: string;
   name: string;
-  mealType: "breakfast" | "lunch" | "dinner" | "snack";
+  mealType: MealType;
   calories: number;
   createdAt: string;
   updatedAt: string;

@@ -1,35 +1,86 @@
+import { useEffect, useState } from "react";
+import {
+  deleteActivityLog,
+  getActivityLogs,
+} from "../../api/activityAPI";
+import AddActivityListEmpty from "./AddActivityListEmpty";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
+import { getTodayEntries } from "../../utils/calorieUtils";
 
+interface IAddActivity {
+  setTotalCaloriesBurnToday: (totalCaloriesBurnToday: number) => void;
+}
+const AddActivityList = ({ setTotalCaloriesBurnToday }: IAddActivity) => {
+  const [activityLogs, setActivityLogs] = useState<ActivityLog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-const AddActivityList = () => {
-  
-   
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedDocumentId, setSelectedDocumentId] = useState<string | null>(
+    null,
+  );
 
-  // const currentUser = useAuthStore((state) => state.currentUser);
-  // const activityWorkouts = useUserData((state) =>
-  //   currentUser ? state.userProfiles[currentUser?.email]?.activityWorkouts : [],
-  // );
+  useEffect(() => {
+    const fetchActivityLogs = async () => {
+      try {
+        const data = await getActivityLogs();
+        const todayActivities = getTodayEntries(data);
 
-  // const todayActivityWorkouts = getTodayEntries(activityWorkouts);
-  // const totalActivityToday = todayActivityWorkouts.reduce(
-  //   (total, workout) => total + workout.duration,
-  //   0,
-  // );
-  // console.log(todayActivityWorkouts, "today");
+        setActivityLogs(todayActivities);
 
-  // const removeActivityWorkout = useUserData(
-  //   (state) => state.removeActivityWorkout,
-  // );
-  // const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
+        const totalCaloriesBurnToday = todayActivities.reduce(
+          (sum, workout) => sum + workout.calories,
+          0,
+        );
+        setTotalCaloriesBurnToday(totalCaloriesBurnToday);
+      } catch (error) {
+        console.log(error);
+        setError("Failed to load food logs");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // const handleDelete = () => {
-  //   if (!entryToDelete || !currentUser) return;
-  //   removeActivityWorkout(currentUser?.email, entryToDelete);
-  //   setEntryToDelete(null);
-  // };
+    fetchActivityLogs();
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  const handleDeleteClick = (documentId: string) => {
+    setSelectedDocumentId(documentId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedDocumentId) return;
+
+    try {
+      await deleteActivityLog(selectedDocumentId);
+
+      setActivityLogs((prev) =>
+        prev.filter((workout) => workout.documentId !== selectedDocumentId),
+      );
+      setIsDeleteModalOpen(false);
+      setSelectedDocumentId(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleCancelDelete = () => {
+    setSelectedDocumentId(null);
+    setIsDeleteModalOpen(false);
+  };
 
   return (
     <div className="mb-[64px] lg:mb-0">
-      {/* {todayActivityWorkouts.length === 0 ? (
+      {activityLogs.length === 0 ? (
         <AddActivityListEmpty />
       ) : (
         <div className="rounded-xl border border-slate-700 bg-[#0f172a] p-4 text-white">
@@ -54,16 +105,16 @@ const AddActivityList = () => {
                   </svg>
                 </div>
                 <p className="text-sm text-slate-400 dark:text-slate-400">
-                  <span>{todayActivityWorkouts.length} </span>items
+                  <span>{activityLogs.length} </span>items
                 </p>
               </div>
             </div>
             <div>
-              <p>{totalActivityToday} min</p>
+              <p>{} min</p>
             </div>
           </div>
           <ul className="space-y-2">
-            {todayActivityWorkouts.map((workout) => (
+            {activityLogs.map((workout) => (
               <li
                 key={workout.id}
                 className="flex justify-between rounded-2xl bg-slate-800 py-2 px-4"
@@ -100,7 +151,7 @@ const AddActivityList = () => {
                   <button
                     type="button"
                     className="p-1 text-red-400 hover:text-red-600"
-                    onClick={() => setEntryToDelete(workout.id)}
+                    onClick={() => handleDeleteClick(workout.documentId)}
                   >
                     <FontAwesomeIcon icon={faTrashAlt} />
                   </button>
@@ -108,7 +159,7 @@ const AddActivityList = () => {
               </li>
             ))}
           </ul>
-          {entryToDelete && (
+          {isDeleteModalOpen && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
               <div className="w-[350px] rounded-xl bg-slate-900 p-6">
                 <h2 className="text-lg font-semibold text-white">
@@ -122,7 +173,7 @@ const AddActivityList = () => {
                 <div className="mt-6 flex justify-end gap-3">
                   <button
                     type="button"
-                    onClick={() => setEntryToDelete(null)}
+                    onClick={handleCancelDelete}
                     className="rounded-lg px-4 py-2 text-slate-300"
                   >
                     Cancel
@@ -130,7 +181,7 @@ const AddActivityList = () => {
 
                   <button
                     type="button"
-                    onClick={handleDelete}
+                    onClick={handleConfirmDelete}
                     className="rounded-lg bg-red-500 px-4 py-2 text-white"
                   >
                     Delete
@@ -140,7 +191,7 @@ const AddActivityList = () => {
             </div>
           )}
         </div>
-      )} */}
+      )}
     </div>
   );
 };

@@ -4,20 +4,7 @@ interface IProfileView {
   onEdit: () => void;
 }
 const ProfileView = ({ onEdit }: IProfileView) => {
-  // const currentUserEmail = useAuthStore((state) => state.currentUser?.email);
 
-  // const userData = useUserData((state) =>
-  //   currentUserEmail ? state.userProfiles[currentUserEmail] : null,
-  // );
-
-
-  // if (!userData) {
-  //   return (
-  //     <div className="flex items-center justify-center h-full p-8 text-gray-500">
-  //       <p>اطلاعات پروفایل یافت نشد. لطفاً ابتدا پروفایل خود را تکمیل کنید.</p>
-  //     </div>
-  //   );
-  // }
 
   return (
     <div className="space-y-4">

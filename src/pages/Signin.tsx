@@ -8,7 +8,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useNavigate } from "react-router";
 import { useAuthStore } from "../store/useAuthStore";
-import { signin } from "../api/auth";
+import { signin } from "../api/authAPI";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);

@@ -1,56 +1,80 @@
 import { useEffect, useState } from "react";
-import type { MealType } from "../../types";
-import { getFoodLogs, getTodayFoodLogs } from "../../api/food";
+import { deleteFoodLog, getFoodLogs } from "../../api/foodAPI";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrashAlt } from "@fortawesome/free-solid-svg-icons";
 import AddFoodListEmpty from "./AddFoodListEmpty";
+import { getTodayEntries } from "../../utils/calorieUtils";
 
 interface IAddFood {
   meals: { type: MealType; label: string; icon: string }[];
+  setTotalCaloriesToday: (totalCaloriesToday: number) => void;
 }
 
-const AddFoodList = ({ meals }: IAddFood) => {
-   const [foodLogs, setFoodLogs] = useState<FoodLog[]>([]);
-   const [loading, setLoading] = useState(true);
-   const [error, setError] = useState("");
+const AddFoodList = ({ meals, setTotalCaloriesToday }: IAddFood) => {
+  const [foodLogs, setFoodLogs] = useState<FoodLog[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-   useEffect(() => {
-     const fetchFoodLogs = async () => {
-       try {
-         const data = await getTodayFoodLogs();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [selectedDocumentId, setSelectedDocumentId] = useState<string | null>(
+    null,
+  );
 
-         setFoodLogs(data);
-       } catch (error) {
-         console.log(error);
-         setError("Failed to load food logs");
-       } finally {
-         setLoading(false);
-       }
-     };
+  useEffect(() => {
+    const fetchFoodLogs = async () => {
+      try {
+        const data = await getFoodLogs();
+        const todayFoods = getTodayEntries(data)
+        setFoodLogs(todayFoods);
 
-     fetchFoodLogs();
-   }, []);
+        const totalCaloriesToday = data.reduce(
+          (sum, food) => sum + food.calories,
+          0,
+        );
+        setTotalCaloriesToday(totalCaloriesToday);
+      } catch (error) {
+        console.log(error);
+        setError("Failed to load food logs");
+      } finally {
+        setLoading(false);
+      }
+    };
 
-   if (loading) {
-     return <p>Loading...</p>;
-   }
+    fetchFoodLogs();
+  }, [setTotalCaloriesToday]);
 
-   if (error) {
-     return <p>{error}</p>;
-   }
-  // const currentUser = useAuthStore((state) => state.currentUser);
-  // const foodEntries = useUserData((state) =>
-  //   currentUser ? state.userProfiles[currentUser?.email]?.foodEntries : [],
-  // );
-  // const todayFoodEntry = getTodayEntries(foodEntries);
-  // const removeFoodEntry = useUserData((state) => state.removeFoodEntry);
-  // const [entryToDelete, setEntryToDelete] = useState<string | null>(null);
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
-  // const handleDelete = () => {
-  //   if (!entryToDelete || !currentUser) return;
-  //   removeFoodEntry(currentUser?.email, entryToDelete);
-  //   setEntryToDelete(null);
-  // };
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  const handleDeleteClick = (documentId: string) => {
+    setSelectedDocumentId(documentId);
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!selectedDocumentId) return;
+
+    try {
+      await deleteFoodLog(selectedDocumentId);
+
+      setFoodLogs((prev) =>
+        prev.filter((food) => food.documentId !== selectedDocumentId),
+      );
+      setIsDeleteModalOpen(false);
+      setSelectedDocumentId(null);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleCancelDelete = () => {
+    setSelectedDocumentId(null);
+    setIsDeleteModalOpen(false);
+  };
 
   return (
     <div className="mb-[64px] lg:mb-0">
@@ -101,18 +125,18 @@ const AddFoodList = ({ meals }: IAddFood) => {
                         <span className="text-slate-400">
                           {entry.calories} kcal
                         </span>
-                        {/* <button
+                        <button
                           type="button"
                           className="p-1 text-red-400 hover:text-red-600"
-                          onClick={() => setEntryToDelete(entry.id)}
+                          onClick={() => handleDeleteClick(entry.documentId)}
                         >
                           <FontAwesomeIcon icon={faTrashAlt} />
-                        </button> */}
+                        </button>
                       </div>
                     </li>
                   ))}
                 </ul>
-                {/* {entryToDelete && (
+                {isDeleteModalOpen && (
                   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60">
                     <div className="w-[350px] rounded-xl bg-slate-900 p-6">
                       <h2 className="text-lg font-semibold text-white">
@@ -126,7 +150,7 @@ const AddFoodList = ({ meals }: IAddFood) => {
                       <div className="mt-6 flex justify-end gap-3">
                         <button
                           type="button"
-                          onClick={() => setEntryToDelete(null)}
+                          onClick={handleCancelDelete}
                           className="rounded-lg px-4 py-2 text-slate-300"
                         >
                           Cancel
@@ -134,7 +158,7 @@ const AddFoodList = ({ meals }: IAddFood) => {
 
                         <button
                           type="button"
-                          onClick={handleDelete}
+                          onClick={handleConfirmDelete}
                           className="rounded-lg bg-red-500 px-4 py-2 text-white"
                         >
                           Delete
@@ -142,7 +166,7 @@ const AddFoodList = ({ meals }: IAddFood) => {
                       </div>
                     </div>
                   </div>
-                )} */}
+                )}
               </div>
             );
           })}
